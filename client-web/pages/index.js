@@ -25,12 +25,19 @@ import Navbar from "../components/Navbar";
 import { BsSuitHeartFill, BsChatLeftQuote } from "react-icons/bs";
 import { BiImageAdd, BiSearch } from "react-icons/bi";
 import { AiOutlineFire, AiOutlinePlus } from "react-icons/ai";
-import { GetPosts, SendPost, UpdateFollow } from "../services/feed.service";
+import {
+    GetPosts,
+    SendPost,
+    UpdateFollow,
+    UpdateUnfollow,
+} from "../services/feed.service";
 import { useMutation, useQuery } from "react-query";
+// import { BsSuitHeartFill } from "react-icons/bs";
 
 // Start editing here, save and see your changes.
 export default function App() {
     const [formData, setData] = React.useState({});
+    const [follow, setFollow] = React.useState({});
 
     const finishMutation = useMutation(SendPost, {
         onSuccess: (data) => {
@@ -58,9 +65,21 @@ export default function App() {
         },
     });
 
+    const unfollowMutation = useMutation(UpdateUnfollow, {
+        onSuccess: (data) => {
+            console.log(data);
+        },
+        onError: (e) => {
+            console.log(e);
+        },
+    });
+
     const onFollow = async (id) => {
         await followMutation.mutateAsync(id);
-        console.log("sfffffffv");
+    };
+
+    const onUnfollow = async (id) => {
+        await unfollowMutation.mutateAsync(id);
     };
 
     return (
@@ -235,8 +254,24 @@ export default function App() {
 
                                     <HStack>
                                         <Button
-                                            onPress={() =>
-                                                onFollow(posts[index]?.user._id)
+                                            onPress={
+                                                // () =>
+                                                // onFollow(posts[index]?.user._id)
+                                                posts[index]?.followedByUser
+                                                    ? () => {
+                                                          onUnfollow(
+                                                              posts[index]?.user
+                                                                  ._id
+                                                          );
+                                                          setFollow(false);
+                                                      }
+                                                    : () => {
+                                                          onFollow(
+                                                              posts[index]?.user
+                                                                  ._id
+                                                          );
+                                                          setFollow(true);
+                                                      }
                                             }
                                             variant={"outline"}
                                             borderRadius="6"
@@ -260,7 +295,12 @@ export default function App() {
                                                 />
                                             }
                                         >
-                                            <Text color="#1d1d1d">Follow</Text>
+                                            <Text color="#1d1d1d">
+                                                {posts[index]?.followedByUser
+                                                    ? "Unfollow"
+                                                    : "Follow"}
+                                                {/* {follow ? "Unfollow" : "Follow"} */}
+                                            </Text>
                                         </Button>
                                     </HStack>
                                 </HStack>

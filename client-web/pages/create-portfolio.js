@@ -8,15 +8,28 @@ import {
     Icon,
     Input,
     Modal,
+    Select,
     Text,
     VStack,
 } from "native-base";
 import React, { useState } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import { useQuery } from "react-query";
 import Navbar from "../components/Navbar";
+import { GetAllStocks } from "../services/stocks.service";
 
 export default function createPortfolio() {
     const [showModal, setShowModal] = useState(false);
+    const [formData, setData] = React.useState({});
+
+    // const [showModal, setShowModal] = useState(false);
+
+    const { data: stocks } = useQuery("stocks", GetAllStocks);
+    console.log(stocks, "stocks");
+
+    const addStock = () => {
+        console.log(formData);
+    };
     return (
         <>
             <Navbar />
@@ -107,18 +120,82 @@ export default function createPortfolio() {
                         <Modal.Header>Add Asset</Modal.Header>
                         <Modal.Body>
                             <FormControl>
-                                <Input
+                                {/* <Input
                                     placeholder="Stock Name"
                                     size="xl"
                                     borderRadius={6}
-                                    // onChangeText={(value) =>
-                                    //     setData({ ...formData, email: value })
-                                    // }
+                                    onChangeText={(value) =>
+                                        setData({ ...formData, email: value })
+                                    }
+                                /> */}
+                                <Select
+                                    // selectedValue={service}
+                                    minWidth="200"
+                                    placeholder="Choose Stock"
+                                    // _selectedItem={{
+                                    //     bg: "teal.600",
+                                    //     endIcon: <CheckIcon size="5" />,
+                                    // }}
+                                    mt={1}
+                                    onValueChange={(itemValue) =>
+                                        setData({
+                                            ...formData,
+                                            ticker: itemValue,
+                                        })
+                                    }
+                                >
+                                    {stocks?.map((stock, index) => (
+                                        <Select.Item
+                                            key={index}
+                                            label={
+                                                stock.name +
+                                                " (" +
+                                                stock.ticker +
+                                                ")"
+                                            }
+                                            value={stock.ticker}
+                                        />
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            <FormControl>
+                                <Input
+                                    mt={6}
+                                    placeholder="Quantity"
+                                    size="sm"
+                                    // variant="filled"
+                                    borderRadius={6}
+                                    onChangeText={(value) =>
+                                        setData({
+                                            ...formData,
+                                            quantity: value,
+                                        })
+                                    }
+                                />
+                            </FormControl>
+                            <FormControl>
+                                <Input
+                                    mt={6}
+                                    placeholder="Buy Price"
+                                    size="sm"
+                                    // variant="filled"
+                                    borderRadius={6}
+                                    onChangeText={(value) =>
+                                        setData({
+                                            ...formData,
+                                            buyPrice: value,
+                                        })
+                                    }
                                 />
                             </FormControl>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button borderRadius="6" bg={"#6E34B8"} w={"12rem"}>
+                            <Button
+                                borderRadius="6"
+                                bg={"#6E34B8"}
+                                w={"12rem"}
+                                onPress={addStock}
+                            >
                                 Save
                             </Button>
                         </Modal.Footer>

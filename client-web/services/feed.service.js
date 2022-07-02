@@ -38,7 +38,6 @@ export const GetPosts = async () => {
 
 export const UpdateFollow = async (id) => {
     try {
-        console.log(id, "id hai yehhhhh");
         let { user } = JSON.parse(localStorage.getItem("persist:root"));
         user = JSON.parse(user);
         const token = user.user.token;
@@ -46,6 +45,27 @@ export const UpdateFollow = async (id) => {
         const response = await axios.put(
             `${BACKEND_URL}/api/user/follow/${id}`,
             "hello",
+            {
+                headers: {
+                    "x-auth-token": token,
+                },
+            }
+        );
+        return response.data;
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+export const UpdateUnfollow = async (id) => {
+    try {
+        let { user } = JSON.parse(localStorage.getItem("persist:root"));
+        user = JSON.parse(user);
+        const token = user.user.token;
+        console.log(token, "token put");
+        const response = await axios.put(
+            `${BACKEND_URL}/api/user/unfollow/${id}`,
+            "helloarushi",
             {
                 headers: {
                     "x-auth-token": token,
