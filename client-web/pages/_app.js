@@ -1,93 +1,27 @@
 import React from "react";
 import "../styles/globals.css";
-import { NativeBaseProvider, extendTheme } from "native-base";
+import { NativeBaseProvider } from "native-base";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
+import store from "../store";
 
-// const theme = extendTheme({
-//   fontConfig: {
-//     Manrope: {
-//       100: {
-//         normal: "Manrope",
-//       },
-//       200: {
-//         normal: "Manrope",
-//       },
-//       300: {
-//         normal: "Manrope",
-//       },
-//       400: {
-//         normal: "Manrope-Regular",
-//       },
-//       500: {
-//         normal: "Manrope-Medium",
-//       },
-//       600: {
-//         normal: "Manrope-Medium",
-//       },
-//     },
-//   },
-
-//   fonts: {
-//     heading: "Manrope",
-//     body: "Manrope",
-//     mono: "Manrope",
-//   },
-// });
-
-const theme = extendTheme({
-  fontConfig: {
-    Roboto: {
-      100: {
-        normal: "Roboto-Light",
-        italic: "Roboto-LightItalic",
-      },
-      200: {
-        normal: "Roboto-Light",
-        italic: "Roboto-LightItalic",
-      },
-      300: {
-        normal: "Roboto-Light",
-        italic: "Roboto-LightItalic",
-      },
-      400: {
-        normal: "Roboto-Regular",
-        italic: "Roboto-Italic",
-      },
-      500: {
-        normal: "Roboto-Medium",
-      },
-      600: {
-        normal: "Roboto-Medium",
-        italic: "Roboto-MediumItalic",
-      },
-      // Add more variants
-      //   700: {
-      //     normal: 'Roboto-Bold',
-      //   },
-      //   800: {
-      //     normal: 'Roboto-Bold',
-      //     italic: 'Roboto-BoldItalic',
-      //   },
-      //   900: {
-      //     normal: 'Roboto-Bold',
-      //     italic: 'Roboto-BoldItalic',
-      //   },
-    },
-  },
-
-  // Make sure values below matches any of the keys in `fontConfig`
-  fonts: {
-    heading: "Roboto",
-    body: "Roboto",
-    mono: "Roboto",
-  },
-});
+const persistor = persistStore(store);
 
 function MyApp({ Component, pageProps }) {
-  return (
-    <NativeBaseProvider>
-      <Component {...pageProps} />
-    </NativeBaseProvider>
-  );
+    const queryClient = new QueryClient();
+    return (
+        <NativeBaseProvider>
+            <Provider store={store}>
+                <PersistGate loading={null} persistor={persistor}>
+                    <QueryClientProvider client={queryClient}>
+                        <Component {...pageProps} />
+                    </QueryClientProvider>
+                </PersistGate>
+            </Provider>
+        </NativeBaseProvider>
+    );
 }
 
 export default MyApp;
