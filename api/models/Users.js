@@ -16,6 +16,23 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "portfolio",
     },
+    avatar: {
+        type: Object,
+    },
+    followers: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "user",
+            default: [],
+        },
+    ],
+    following: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "user",
+            default: [],
+        },
+    ],
     createdAt: {
         type: Date,
     },

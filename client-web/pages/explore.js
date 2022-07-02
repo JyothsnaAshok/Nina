@@ -26,8 +26,13 @@ export default function explore() {
     return (
         <>
             <Navbar />
-            <HStack p={10}>
-                <VStack m={5} w={"25rem"}>
+            <HStack
+                p={10}
+                display="flex"
+                alignItems="center"
+                justifyContent="space-around"
+            >
+                {/* <VStack m={5} w={"25rem"}>
                     <Box
                         // maxW="80"
                         // width="30%"
@@ -55,9 +60,16 @@ export default function explore() {
                             />
                         </Text>
                     </Box>
-                </VStack>
-                <VStack w={"55rem"}>
-                    <Container shadow={1} px={8} width="100%" borderRadius={12}>
+                </VStack> */}
+                <VStack w={"70%"}>
+                    <VStack
+                        // shadow={1}
+                        borderColor="coolGray.200"
+                        borderWidth="1"
+                        px={8}
+                        width="100%"
+                        borderRadius={12}
+                    >
                         <HStack
                             display={"flex"}
                             justifyContent="space-between"
@@ -101,15 +113,15 @@ export default function explore() {
                                 Followed by: 234325
                             </Text>
                         </HStack>
-                    </Container>
+                    </VStack>
                 </VStack>
-                <VStack m={5} w={"25rem"}>
+                <VStack w={"20%"}>
                     <Box
                         borderColor="coolGray.200"
                         borderWidth="1"
                         padding={4}
                         rounded="lg"
-                        height={"100%"}
+                        // height={"100%"}
                     >
                         <VStack width="100%" space={5} alignSelf="center">
                             <Text>Search</Text>
