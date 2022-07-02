@@ -3,9 +3,11 @@ const bcrypt = require("bcryptjs");
 const User = require("../../models/Users");
 const middleware = require("../../middleware/auth");
 
-//@route POST api/user
-//@desc Register User
-//@access public
+/**
+ * @route POST /api/user
+ * @description Create a new user.
+ * @access Public
+ */
 router.post("/", async (req, res) => {
     const { name, email, password } = req.body;
     console.log(req.body);
@@ -35,9 +37,11 @@ router.post("/", async (req, res) => {
     }
 });
 
-//@route GET api/user
-//@desc Get User by email
-//@access public
+/**
+ * @route GET /api/user/:id
+ * @description Get a user by id.
+ * @access Private
+ */
 router.get("/:id", middleware, async (req, res) => {
     try {
         const user = await User.findOne({
@@ -54,9 +58,11 @@ router.get("/:id", middleware, async (req, res) => {
     }
 });
 
-//@route PUT api/user/id
-//@desc Update User by email id
-//@access public
+/**
+ * @route PUT /api/user/:id
+ * @description Update a user by id.
+ * @access Private
+ */
 router.put("/:id", middleware, async (req, res) => {
     const { name } = req.body;
     const updateData = { name, updatedAt: new Date() };
@@ -82,9 +88,11 @@ router.put("/:id", middleware, async (req, res) => {
     }
 });
 
-//@route DELETE api/users/id
-//@desc Delete User by id
-//@access public
+/**
+ * @route DELETE /api/user/:id
+ * @description Delete a user by id.
+ * @access Private
+ */
 router.delete("/:id", middleware, async (req, res) => {
     try {
         let found = await User.findOneAndDelete({ _id: req.params.id });
