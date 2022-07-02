@@ -2,10 +2,26 @@ import React from "react";
 import { Box, Image, Pressable, Text, VStack } from "native-base";
 import logo from "../../../assets/logo.png";
 
-export default function Home({ navigation }) {
+export function Screen1({ navigation }) {
     return (
         <Box flex="1" bgColor={"#ffffff"}>
-            News
+            News 1
+        </Box>
+    );
+}
+
+export function Screen2({ navigation }) {
+    return (
+        <Box flex="1" bgColor={"#ffffff"}>
+            News 2
+        </Box>
+    );
+}
+
+export function Screen3({ navigation }) {
+    return (
+        <Box flex="1" bgColor={"#ffffff"}>
+            News 3
         </Box>
     );
 }
