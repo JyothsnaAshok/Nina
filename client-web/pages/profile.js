@@ -18,7 +18,7 @@ export default function profile() {
                     display={"flex"}
                     justifyContent={"center"}
                     alignItems={"center"}
-                    borderColor="#F68766"
+                    borderColor="#6E34B8"
                     borderWidth="1.5px"
                     width={"50%"}
                     borderRadius={16}
@@ -63,11 +63,16 @@ export default function profile() {
                     // rounded="3xl"
                     borderRadius="6"
                     bg={"#6E34B8"}
-                    w={"8rem"}
+                    w={"10rem"}
                     my={5}
                     // ml={"4rem"}
+                    _text={{
+                        color: "#6E34B8",
+                    }}
                 >
-                    <Link href="/create-portfolio">Create a Portfolio </Link>
+                    <Link href="/create-portfolio" isUnderlined={false}>
+                        <Text color={"#fff"}>Create a Portfolio </Text>
+                    </Link>
                 </Button>
             </VStack>
         </>

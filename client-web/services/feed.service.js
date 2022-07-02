@@ -36,6 +36,26 @@ export const GetPosts = async () => {
     }
 };
 
+export const GetTrendPosts = async () => {
+    try {
+        let { user } = JSON.parse(localStorage.getItem("persist:root"));
+        user = JSON.parse(user);
+        const token = user.user.token;
+        console.log(token);
+        const response = await axios.get(
+            `${BACKEND_URL}/api/feed?filter=likes:desc`,
+            {
+                headers: {
+                    "x-auth-token": token,
+                },
+            }
+        );
+        return response.data;
+    } catch (e) {
+        console.log(e);
+    }
+};
+
 export const UpdateFollow = async (id) => {
     try {
         let { user } = JSON.parse(localStorage.getItem("persist:root"));

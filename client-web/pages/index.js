@@ -28,6 +28,7 @@ import { BiImageAdd, BiSearch } from "react-icons/bi";
 import { AiOutlineFire, AiOutlinePlus } from "react-icons/ai";
 import {
     GetPosts,
+    GetTrendPosts,
     SendPost,
     UpdateFollow,
     UpdateUnfollow,
@@ -60,6 +61,9 @@ export default function App() {
 
     const { data: posts } = useQuery("posts", GetPosts);
     console.log(posts, "posts");
+
+    const { data: trends } = useQuery("trends", GetTrendPosts);
+    console.log(trends, "trends");
 
     const followMutation = useMutation(UpdateFollow, {
         onSuccess: (data) => {
@@ -114,7 +118,7 @@ export default function App() {
                             textDecorationColor="coolGray.500"
                             py={6}
                         >
-                            Trending Portfolios
+                            Trending Posts
                             <Icon
                                 m="5"
                                 size="8"
@@ -126,23 +130,29 @@ export default function App() {
                                 }
                             />
                         </Text>
-                        <HStack
-                            display={"flex"}
-                            justifyContent="space-between"
-                            alignItems={"center"}
-                            // borderBottomWidth={1}
-                            // borderBottomColor="coolGray.200"
-                        >
-                            <VStack pr={10} pb={5}>
-                                <Text color="black" bold>
-                                    Balanced Growth
-                                </Text>
-                                <Text color="coolGray.500">by Trinkerr</Text>
-                            </VStack>
-                            <VStack>
-                                <BsSuitHeartFill />
-                            </VStack>
-                        </HStack>
+                        {trends?.map((item, index) => (
+                            <HStack
+                                display={"flex"}
+                                justifyContent="space-between"
+                                alignItems={"center"}
+                                key={index}
+                                // borderBottomWidth={1}
+                                // borderBottomColor="coolGray.200"
+                            >
+                                <VStack pr={10} pb={5}>
+                                    <Text color="black" bold>
+                                        {item?.text.slice(0, 40)}
+                                        {"...."}
+                                    </Text>
+                                    <Text color="coolGray.500">
+                                        by {item?.user.name}
+                                    </Text>
+                                </VStack>
+                                <VStack>
+                                    <BsSuitHeartFill />
+                                </VStack>
+                            </HStack>
+                        ))}
                     </Box>
                 </VStack>
                 <VStack m={5} w={"50rem"}>
@@ -332,7 +342,7 @@ export default function App() {
                         ))}
                     </Box>
                 </VStack>
-                <VStack m={5} w={"25rem"}>
+                {/* <VStack m={5} w={"25rem"}>
                     <Box
                         borderColor="coolGray.200"
                         borderWidth="1"
@@ -360,7 +370,7 @@ export default function App() {
                             />
                         </VStack>
                     </Box>
-                </VStack>
+                </VStack> */}
             </HStack>
         </>
     );
