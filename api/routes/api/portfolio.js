@@ -9,31 +9,42 @@ const middleware = require("../../middleware/auth");
  * @access Private
  */
 router.post("/", middleware, async (req, res) => {
-    const { name, description, stocks } = req.body;
+    const { stock } = req.body;
     const userId = req.user.id;
-    const userDetails = await User.findOne({ _id: userId });
-    if (!userDetails) {
-        return res
-            .status(400)
-            .json({ errors: [{ message: "User does not exist" }] });
-    }
-    if (userDetails.portfolio) {
-        return res
-            .status(400)
-            .json({ errors: [{ message: "User already has a portfolio" }] });
-    }
-    const portfolio = new Portfolio({
-        name,
-        description,
-        stocks,
-        user: userId,
-    });
+    let portfolio = null;
     try {
-        await portfolio.save();
-        await User.findOneAndUpdate(
-            { _id: userId },
-            { portfolio: portfolio._id, updatedAt: Date.now() }
-        );
+        const userDetails = await User.findOne({ _id: userId });
+        if (!userDetails) {
+            return res
+                .status(400)
+                .json({ errors: [{ message: "User does not exist" }] });
+        }
+        if (!userDetails.portfolio) {
+            portfolio = new Portfolio({
+                stocks: [stock],
+                user: userId,
+            });
+            await portfolio.save();
+            await User.findOneAndUpdate(
+                { _id: userId },
+                { portfolio: portfolio._id, updatedAt: Date.now() }
+            );
+        } else {
+            portfolio = await Portfolio.findOne({
+                _id: userDetails.portfolio,
+            });
+            if (portfolio.stocks.some((elem) => elem.ticker === stock.ticker)) {
+                return res.status(400).json({
+                    errors: [{ message: "Stock already exists" }],
+                });
+            }
+            portfolio.stocks.push(stock);
+            await portfolio.save();
+            await User.findOneAndUpdate(
+                { _id: userId },
+                { updatedAt: Date.now() }
+            );
+        }
         res.send(portfolio);
     } catch (err) {
         res.status(400).send(err);
@@ -47,11 +58,32 @@ router.post("/", middleware, async (req, res) => {
  */
 router.get("/:id", middleware, async (req, res) => {
     const { id } = req.params;
-    const portfolio = await Portfolio.findOne({ _id: id });
+    const portfolio = await Portfolio.findOne({ _id: id }).populate({
+        path: "user",
+        select: ["name", "avatar"],
+    });
     if (!portfolio) {
         return res
             .status(400)
             .json({ errors: [{ message: "Portfolio does not exist" }] });
+    }
+    res.send(portfolio);
+});
+
+/**
+ * @route GET /api/portfolio
+ * @description Get a portfolio by id.
+ * @access Private
+ */
+router.get("/", middleware, async (req, res) => {
+    const portfolio = await Portfolio.find().populate({
+        path: "user",
+        select: ["name", "avatar"],
+    });
+    if (!portfolio) {
+        return res
+            .status(404)
+            .json({ errors: [{ message: "Portfolios not found" }] });
     }
     res.send(portfolio);
 });
