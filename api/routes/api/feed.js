@@ -76,7 +76,6 @@ router.get("/", middleware, async (req, res) => {
                     return a.likedBy.length - b.likedBy.length;
                 });
             } else if (req.query.filter === "following") {
-                console.log("here");
                 const followingList = user.following;
                 response = response.filter((feed) => {
                     return followingList.includes(feed.user._id);

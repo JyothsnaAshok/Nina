@@ -2,7 +2,6 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 module.exports = function (req, res, next) {
-    console.log("here");
     const jwtSecret = process.env.SECRET;
     //Get Token
     const token = req.header("x-auth-token");

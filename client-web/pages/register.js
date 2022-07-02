@@ -12,6 +12,7 @@ import {
     Center,
     Link,
     Flex,
+    useToast,
 } from "native-base";
 import React from "react";
 import { BsPerson } from "react-icons/bs";
@@ -25,14 +26,16 @@ import { useDispatch } from "react-redux";
 export default function register() {
     const [formData, setData] = React.useState({});
     const dispatch = useDispatch();
+    const toast = useToast();
 
     const finishMutation = useMutation(SignUp, {
         onSuccess: (data) => {
             // message.success("Successfully Registered!");
             console.log(data);
             dispatch(login(data));
-            // navigate("/login", { replace: true });
-            // queryClient.invalidateQueries("kyc-profile");
+            toast.show({
+                description: "Registered in successfully",
+            });
         },
         onError: (e) => {
             console.log("reached");

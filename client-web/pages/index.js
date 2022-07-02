@@ -20,6 +20,7 @@ import {
     Input,
     Icon,
     FormControl,
+    useToast,
 } from "native-base";
 import Navbar from "../components/Navbar";
 import { BsSuitHeartFill, BsChatLeftQuote } from "react-icons/bs";
@@ -38,10 +39,14 @@ import { useMutation, useQuery } from "react-query";
 export default function App() {
     const [formData, setData] = React.useState({});
     const [follow, setFollow] = React.useState({});
+    const toast = useToast();
 
     const finishMutation = useMutation(SendPost, {
         onSuccess: (data) => {
             console.log(data);
+            toast.show({
+                description: "Post sent successfully",
+            });
         },
         onError: (e) => {
             console.log(e);
@@ -59,6 +64,9 @@ export default function App() {
     const followMutation = useMutation(UpdateFollow, {
         onSuccess: (data) => {
             console.log(data);
+            toast.show({
+                description: "Followed",
+            });
         },
         onError: (e) => {
             console.log(e);
@@ -68,6 +76,9 @@ export default function App() {
     const unfollowMutation = useMutation(UpdateUnfollow, {
         onSuccess: (data) => {
             console.log(data);
+            toast.show({
+                description: "Unfollowed",
+            });
         },
         onError: (e) => {
             console.log(e);

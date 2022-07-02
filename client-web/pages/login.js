@@ -13,6 +13,7 @@ import {
     Center,
     Link,
     Flex,
+    useToast,
 } from "native-base";
 import Image from "next/image";
 import { useMutation } from "react-query";
@@ -23,11 +24,15 @@ import { useDispatch } from "react-redux";
 export default function loginPage() {
     const [formData, setData] = React.useState({});
     const dispatch = useDispatch();
+    const toast = useToast();
 
     const finishMutation = useMutation(SignIn, {
         onSuccess: (data) => {
             console.log(data);
             dispatch(login(data));
+            toast.show({
+                description: "Logged in successfully",
+            });
         },
         onError: (e) => {
             console.log(e);

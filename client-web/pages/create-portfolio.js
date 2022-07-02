@@ -11,25 +11,67 @@ import {
     Select,
     Text,
     VStack,
+    useToast,
 } from "native-base";
 import React, { useState } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import Navbar from "../components/Navbar";
-import { GetAllStocks } from "../services/stocks.service";
+import { EditPortfolio } from "../services/portfolio.service";
+import { GetAllStocks, SendStock } from "../services/stocks.service";
 
 export default function createPortfolio() {
+    const toast = useToast();
     const [showModal, setShowModal] = useState(false);
+    const [showModalEdit, setShowModalEdit] = useState(false);
     const [formData, setData] = React.useState({});
+    const [formDataEdit, setDataEdit] = React.useState({});
 
     // const [showModal, setShowModal] = useState(false);
 
     const { data: stocks } = useQuery("stocks", GetAllStocks);
     console.log(stocks, "stocks");
 
-    const addStock = () => {
+    const stockMutation = useMutation(SendStock, {
+        onSuccess: (data) => {
+            console.log(data);
+            toast.show({
+                description: "Stock added to portfolio",
+            });
+        },
+        onError: (e) => {
+            // toast.show({
+            //     description: e.response.data.errors[0].message,
+            // });
+            console.log(e);
+        },
+    });
+
+    const addStock = async () => {
         console.log(formData);
+        await stockMutation.mutateAsync(formData);
     };
+
+    const editMutation = useMutation(EditPortfolio, {
+        onSuccess: (data) => {
+            console.log(data);
+            toast.show({
+                description: "Portfolio updated",
+            });
+        },
+        onError: (e) => {
+            toast.show({
+                description: e.response.data.errors[0].message,
+            });
+            console.log(e);
+        },
+    });
+
+    const onEdit = async () => {
+        console.log(formDataEdit);
+        await editMutation.mutateAsync(formDataEdit);
+    };
+
     return (
         <>
             <Navbar />
@@ -69,7 +111,20 @@ export default function createPortfolio() {
                             My Portfolio
                         </Text>
                         <Text color={"#6E34B8"} px={4} fontSize={12}>
-                            by Username Gandhi
+                            by Arushi Gandhi
+                        </Text>
+                        <Text px={4} fontSize={18}>
+                            This is my stock holder's portfolio. Welcome!
+                            <Button
+                                m={4}
+                                p={0}
+                                w={"3rem"}
+                                variant="outline"
+                                _text={{ color: "#6E34B8" }}
+                                onPress={() => setShowModalEdit(true)}
+                            >
+                                Edit
+                            </Button>
                         </Text>
                     </VStack>
                 </HStack>
@@ -195,6 +250,44 @@ export default function createPortfolio() {
                                 bg={"#6E34B8"}
                                 w={"12rem"}
                                 onPress={addStock}
+                            >
+                                Save
+                            </Button>
+                        </Modal.Footer>
+                    </Modal.Content>
+                </Modal>
+            </Center>
+            <Center>
+                <Modal
+                    isOpen={showModalEdit}
+                    onClose={() => setShowModalEdit(false)}
+                >
+                    <Modal.Content maxWidth="400px">
+                        <Modal.CloseButton />
+                        <Modal.Header>Change Description</Modal.Header>
+                        <Modal.Body>
+                            <FormControl>
+                                <Input
+                                    mt={6}
+                                    placeholder="Description"
+                                    size="sm"
+                                    // variant="filled"
+                                    borderRadius={6}
+                                    onChangeText={(value) =>
+                                        setDataEdit({
+                                            ...formDataEdit,
+                                            description: value,
+                                        })
+                                    }
+                                />
+                            </FormControl>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button
+                                borderRadius="6"
+                                bg={"#6E34B8"}
+                                w={"12rem"}
+                                onPress={onEdit}
                             >
                                 Save
                             </Button>
