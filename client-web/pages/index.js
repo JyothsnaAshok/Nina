@@ -19,14 +19,50 @@ import {
     Avatar,
     Input,
     Icon,
+    FormControl,
 } from "native-base";
 import Navbar from "../components/Navbar";
 import { BsSuitHeartFill, BsChatLeftQuote } from "react-icons/bs";
 import { BiImageAdd, BiSearch } from "react-icons/bi";
 import { AiOutlineFire, AiOutlinePlus } from "react-icons/ai";
+import { GetPosts, SendPost, UpdateFollow } from "../services/feed.service";
+import { useMutation, useQuery } from "react-query";
 
 // Start editing here, save and see your changes.
 export default function App() {
+    const [formData, setData] = React.useState({});
+
+    const finishMutation = useMutation(SendPost, {
+        onSuccess: (data) => {
+            console.log(data);
+        },
+        onError: (e) => {
+            console.log(e);
+        },
+    });
+
+    const onFinish = async () => {
+        console.log(formData);
+        await finishMutation.mutateAsync(formData);
+    };
+
+    const { data: posts } = useQuery("posts", GetPosts);
+    console.log(posts, "posts");
+
+    const followMutation = useMutation(UpdateFollow, {
+        onSuccess: (data) => {
+            console.log(data);
+        },
+        onError: (e) => {
+            console.log(e);
+        },
+    });
+
+    const onFollow = async (id) => {
+        await followMutation.mutateAsync(id);
+        console.log("sfffffffv");
+    };
+
     return (
         <>
             <Navbar />
@@ -95,31 +131,44 @@ export default function App() {
                             >
                                 JB
                             </Avatar>
-                            <TextArea
-                                variant={"filled"}
-                                w={"40rem"}
-                                borderRadius="6"
-                                placeholder="What's on your mind today?"
-                            />
+                            <FormControl ml={5}>
+                                <TextArea
+                                    variant={"filled"}
+                                    w={"40rem"}
+                                    borderRadius="6"
+                                    placeholder="What's on your mind today?"
+                                    onChangeText={(value) =>
+                                        setData({ ...formData, text: value })
+                                    }
+                                />
+                            </FormControl>
                         </HStack>
-                        <HStack alignItems={"center"}>
+                        <HStack alignItems={"center"} ml={12}>
+                            {/* <Button
+                                variant={"outline"}
+                                borderRadius="6"
+                                w={"8rem"}
+                                mx={5}
+                            > */}
+                            {/* <input type="file">
+                                <Text color="#1d1d1d">
+                                Upload
+                                </Text>
+                            </input> */}
+                            {/* <input type="file" id="leftbutton">
+                                Upload Image
+                            </input> */}
+                            {/* </Button> */}
                             <Button
                                 // rounded="3xl"
                                 borderRadius="6"
                                 bg={"#6E34B8"}
                                 w={"8rem"}
                                 my={5}
-                                ml={"4rem"}
+                                // ml={"4rem"}
+                                onPress={onFinish}
                             >
                                 Post
-                            </Button>
-                            <Button
-                                variant={"outline"}
-                                borderRadius="6"
-                                w={"8rem"}
-                                mx={5}
-                            >
-                                <Text color="#1d1d1d">Upload</Text>
                             </Button>
                         </HStack>
                     </Box>
@@ -152,86 +201,84 @@ export default function App() {
                                 }
                             />
                         </Text>
-                        <VStack
-                            paddingBottom={5}
-                            borderBottomWidth={1}
-                            borderBottomColor="coolGray.200"
-                        >
-                            <HStack
-                                display={"flex"}
-                                justifyContent="space-between"
-                                alignItems={"center"}
+                        {posts?.map((item, index) => (
+                            <VStack
+                                key={index}
+                                paddingBottom={5}
+                                borderBottomWidth={1}
+                                borderBottomColor="coolGray.200"
                             >
                                 <HStack
                                     display={"flex"}
                                     justifyContent="space-between"
                                     alignItems={"center"}
                                 >
-                                    <Avatar
-                                        my={"1rem"}
-                                        bg="indigo.500"
-                                        source={{
-                                            uri: "https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-                                        }}
-                                        size="sm"
+                                    <HStack
+                                        display={"flex"}
+                                        justifyContent="space-between"
+                                        alignItems={"center"}
                                     >
-                                        JB
-                                    </Avatar>
-                                    <Text bold px={4}>
-                                        Username Gandhi
-                                    </Text>
-                                </HStack>
+                                        <Avatar
+                                            my={"1rem"}
+                                            bg="indigo.500"
+                                            source={{
+                                                uri: "https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+                                            }}
+                                            size="sm"
+                                        >
+                                            JB
+                                        </Avatar>
+                                        <Text bold px={4}>
+                                            {posts[index]?.user.name}
+                                        </Text>
+                                    </HStack>
 
-                                <HStack>
-                                    <Button
-                                        variant={"outline"}
-                                        borderRadius="6"
-                                        py={1}
-                                        width={"8rem"}
-                                        rightIcon={
-                                            <Icon
-                                                size="5"
-                                                color="coolGray.500"
-                                                as={
-                                                    <AiOutlinePlus
-                                                        style={{
-                                                            marginLeft:
-                                                                "0.5rem",
-                                                            fontSize: "1rem",
-                                                            color: "#1d1d1d",
-                                                        }}
-                                                    />
-                                                }
-                                            />
-                                        }
-                                    >
-                                        <Text color="#1d1d1d">Follow</Text>
-                                    </Button>
+                                    <HStack>
+                                        <Button
+                                            onPress={() =>
+                                                onFollow(posts[index]?.user._id)
+                                            }
+                                            variant={"outline"}
+                                            borderRadius="6"
+                                            py={1}
+                                            width={"8rem"}
+                                            rightIcon={
+                                                <Icon
+                                                    size="5"
+                                                    color="coolGray.500"
+                                                    as={
+                                                        <AiOutlinePlus
+                                                            style={{
+                                                                marginLeft:
+                                                                    "0.5rem",
+                                                                fontSize:
+                                                                    "1rem",
+                                                                color: "#1d1d1d",
+                                                            }}
+                                                        />
+                                                    }
+                                                />
+                                            }
+                                        >
+                                            <Text color="#1d1d1d">Follow</Text>
+                                        </Button>
+                                    </HStack>
                                 </HStack>
-                            </HStack>
-                            <Text px={"10"} py={"2"}>
-                                🚀 A Penny Stock That Tripled Investors' Money
-                                In A Year
-                                <br />
-                                <br />
-                                🚀 A stock that zoomed 5% in a day, 20% in a
-                                week and 40% in 7 sessions! It has always
-                                remained in green and has managed to give 3x
-                                returns to every investor who counted on it!
-                                Which is this penny-stock-turned-multibagger?
-                                Lloyds Steels Industries Ltd. (LSIL)
-                            </Text>
-                            <Center py="5">
-                                <Image
-                                    width={"38rem"}
-                                    height={"10rem"}
-                                    source={{
-                                        uri: "https://wallpaperaccess.com/full/317501.jpg",
-                                    }}
-                                    borderRadius="6"
-                                />
-                            </Center>
-                        </VStack>
+                                <Text px={"10"} py={"2"}>
+                                    {posts[index]?.text}
+                                </Text>
+                                <Center py="5">
+                                    <Image
+                                        width={"38rem"}
+                                        height={"10rem"}
+                                        source={{
+                                            uri: "https://wallpaperaccess.com/full/317501.jpg",
+                                        }}
+                                        borderRadius="6"
+                                    />
+                                </Center>
+                            </VStack>
+                        ))}
                     </Box>
                 </VStack>
                 <VStack m={5} w={"25rem"}>
