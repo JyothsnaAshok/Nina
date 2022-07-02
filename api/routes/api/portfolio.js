@@ -108,37 +108,27 @@ router.get("/", middleware, async (req, res) => {
 });
 
 /**
- * @route PUT /api/portfolio/:id
- * @description Update a portfolio by id.
+ * @route PUT /api/portfolio
+ * @description Update a portfolio.
  * @access Private
  */
-// router.put("/:id", middleware, async (req, res) => {
-//     const { id } = req.params;
-//     const { name, description, stocks } = req.body;
-//     const portfolio = await Portfolio.findOne({ _id: id });
-//     if (!portfolio) {
-//         return res
-//             .status(400)
-//             .json({ errors: [{ message: "Portfolio does not exist" }] });
-//     }
-//     if (portfolio.user.toString() !== req.user.id) {
-//         return res.status(400).json({ errors: [{ message: "Unauthorized" }] });
-//     }
-//     if (name) {
-//         portfolio.name = name;
-//     }
-//     if (description) {
-//         portfolio.description = description;
-//     }
-//     if (stocks) {
-//         portfolio.stocks = stocks;
-//     }
-//     try {
-//         await portfolio.save();
-//         res.send(portfolio);
-//     } catch (err) {
-//         res.status(400).send(err);
-//     }
-// });
+router.put("/", middleware, async (req, res) => {
+    const { description } = req.body;
+    const portfolio = await Portfolio.findOne({ user: req.user.id });
+    if (!portfolio) {
+        return res
+            .status(400)
+            .json({ errors: [{ message: "Portfolio does not exist" }] });
+    }
+    if (description) {
+        portfolio.description = description;
+    }
+    try {
+        await portfolio.save();
+        res.send(portfolio);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+});
 
 module.exports = router;
