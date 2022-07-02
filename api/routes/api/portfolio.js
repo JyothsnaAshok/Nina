@@ -52,6 +52,25 @@ router.post("/", middleware, async (req, res) => {
 });
 
 /**
+ * @route GET /api/portfolio/myfolio
+ * @description Get self portfolio.
+ * @access Private
+ */
+router.get("/myfolio", middleware, async (req, res) => {
+    const { id } = req.user;
+    const portfolio = await Portfolio.findOne({ user: id }).populate({
+        path: "user",
+        select: ["name", "avatar"],
+    });
+    if (!portfolio) {
+        return res
+            .status(400)
+            .json({ errors: [{ message: "Portfolio does not exist" }] });
+    }
+    res.send(portfolio);
+});
+
+/**
  * @route GET /api/portfolio/:id
  * @description Get a portfolio by id.
  * @access Private
@@ -72,7 +91,7 @@ router.get("/:id", middleware, async (req, res) => {
 
 /**
  * @route GET /api/portfolio
- * @description Get a portfolio by id.
+ * @description Get all the portfolios.
  * @access Private
  */
 router.get("/", middleware, async (req, res) => {
@@ -93,33 +112,33 @@ router.get("/", middleware, async (req, res) => {
  * @description Update a portfolio by id.
  * @access Private
  */
-router.put("/:id", middleware, async (req, res) => {
-    const { id } = req.params;
-    const { name, description, stocks } = req.body;
-    const portfolio = await Portfolio.findOne({ _id: id });
-    if (!portfolio) {
-        return res
-            .status(400)
-            .json({ errors: [{ message: "Portfolio does not exist" }] });
-    }
-    if (portfolio.user.toString() !== req.user.id) {
-        return res.status(400).json({ errors: [{ message: "Unauthorized" }] });
-    }
-    if (name) {
-        portfolio.name = name;
-    }
-    if (description) {
-        portfolio.description = description;
-    }
-    if (stocks) {
-        portfolio.stocks = stocks;
-    }
-    try {
-        await portfolio.save();
-        res.send(portfolio);
-    } catch (err) {
-        res.status(400).send(err);
-    }
-});
+// router.put("/:id", middleware, async (req, res) => {
+//     const { id } = req.params;
+//     const { name, description, stocks } = req.body;
+//     const portfolio = await Portfolio.findOne({ _id: id });
+//     if (!portfolio) {
+//         return res
+//             .status(400)
+//             .json({ errors: [{ message: "Portfolio does not exist" }] });
+//     }
+//     if (portfolio.user.toString() !== req.user.id) {
+//         return res.status(400).json({ errors: [{ message: "Unauthorized" }] });
+//     }
+//     if (name) {
+//         portfolio.name = name;
+//     }
+//     if (description) {
+//         portfolio.description = description;
+//     }
+//     if (stocks) {
+//         portfolio.stocks = stocks;
+//     }
+//     try {
+//         await portfolio.save();
+//         res.send(portfolio);
+//     } catch (err) {
+//         res.status(400).send(err);
+//     }
+// });
 
 module.exports = router;
