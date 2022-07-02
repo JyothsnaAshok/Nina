@@ -52,7 +52,16 @@ router.get("/:id", middleware, async (req, res) => {
     try {
         const user = await User.findOne({
             _id: req.params.id,
-        }).select("-password");
+        })
+            .select("-password")
+            .populate({
+                path: "followers",
+                select: ["name", "avatar"],
+            })
+            .populate({
+                path: "following",
+                select: ["name", "avatar"],
+            });
         if (!user) {
             return res
                 .status(400)
