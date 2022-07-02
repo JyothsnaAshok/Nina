@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 
 const PortfolioSchema = new mongoose.Schema({
+    description: {
+        type: String,
+    },
     stocks: [
         {
             type: Object,
