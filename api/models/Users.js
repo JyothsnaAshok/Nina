@@ -12,6 +12,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    portfolio: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "portfolio",
+    },
     createdAt: {
         type: Date,
     },
