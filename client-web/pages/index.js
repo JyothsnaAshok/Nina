@@ -88,7 +88,6 @@ export default function App() {
                     >
                         <HStack justifyContent={"space-between"}>
                             <Avatar
-                                my={"1rem"}
                                 bg="indigo.500"
                                 source={{
                                     uri: "https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
@@ -97,14 +96,10 @@ export default function App() {
                                 JB
                             </Avatar>
                             <TextArea
-                                // h={20}
                                 variant={"filled"}
                                 w={"40rem"}
-                                // borderRadius={12}
                                 borderRadius="6"
-                                placeholder="What's on your mind?"
-                                // w="75%"
-                                // maxW="300"
+                                placeholder="What's on your mind today?"
                             />
                         </HStack>
                         <HStack alignItems={"center"}>

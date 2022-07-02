@@ -61,22 +61,21 @@ export default function register() {
                 direction="row"
                 alignItems={"center"}
                 justifyContent="center"
-                backgroundColor={"purple.50"}
                 height={"100vh"}
             >
                 {/* <HStack> */}
                 <VStack
                     safeArea
                     // mt={150}
-                    width={"40%"}
+                    width={"30%"}
                     // shadow="6"
                     p={10}
                     borderRadius={12}
                 >
                     <Heading size="lg" color="purple.800">
-                        Welcome
+                        What are you waiting for? Sign up today!
                     </Heading>
-                    <Heading color="muted.400" size="xs">
+                    <Heading color="muted.400" size="xs" fontWeight={400}>
                         Already have an account?{" "}
                         <Link href="/login">Login</Link>
                     </Heading>
@@ -84,7 +83,7 @@ export default function register() {
                         <FormControl>
                             <Input
                                 placeholder="Name"
-                                //   variant="filled"
+                                variant="filled"
                                 size="xl"
                                 borderRadius={6}
                                 onChangeText={(value) =>
@@ -95,7 +94,7 @@ export default function register() {
                         <FormControl>
                             <Input
                                 placeholder="Email"
-                                //   variant="filled"
+                                variant="filled"
                                 size="xl"
                                 borderRadius={6}
                                 onChangeText={(value) =>
@@ -107,7 +106,7 @@ export default function register() {
                             <Input
                                 type="password"
                                 placeholder="Password"
-                                //   variant="filled"
+                                variant="filled"
                                 size="xl"
                                 borderRadius={6}
                                 //   backgroundColor={"white"}
@@ -119,7 +118,7 @@ export default function register() {
 
                         <VStack space={2} mt={5}>
                             <Button
-                                colorScheme="purple"
+                                bg="#6E34B8"
                                 _text={{
                                     color: "white",
                                 }}
@@ -131,8 +130,18 @@ export default function register() {
                         </VStack>
                     </VStack>
                 </VStack>
-                <VStack safeArea width={"40%"}>
-                    <Image src="/images/reg.svg" width={250} height={250} />
+                <VStack
+                    safeArea
+                    width={"30%"}
+                    bgColor={"#6E34B8"}
+                    p={20}
+                    borderRadius={"1rem"}
+                >
+                    <Image
+                        src="/images/whitelogo.svg"
+                        width={200}
+                        height={200}
+                    />
                 </VStack>
                 {/* </HStack> */}
             </Flex>
