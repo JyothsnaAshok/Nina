@@ -12,7 +12,16 @@ const middleware = require("../../middleware/auth");
  */
 router.get("/", middleware, async (req, res) => {
     try {
-        const user = await User.findById(req.user.id).select("-password");
+        const user = await User.findById(req.user.id)
+            .select("-password")
+            .populate({
+                path: "followers",
+                select: "name",
+            })
+            .populate({
+                path: "following",
+                select: "name",
+            });
         if (!user) {
             return res
                 .status(404)
