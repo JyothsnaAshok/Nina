@@ -21,16 +21,18 @@ router.post("/", middleware, uploads.single("image"), async (req, res) => {
                 message: "User not found",
             });
         }
-        const image = req.file.path;
-        const { public_id, url } = await uploadImage(image);
         const feed = new Feed({
             text,
             user: userId,
-            image: {
+        });
+        const image = req.file?.path;
+        if (image) {
+            const { public_id, url } = await uploadImage(image);
+            feed.image = {
                 public_id,
                 url,
-            },
-        });
+            };
+        }
         await feed.save();
         res.send(feed);
     } catch (error) {
@@ -46,11 +48,11 @@ router.post("/", middleware, uploads.single("image"), async (req, res) => {
  */
 router.get("/", middleware, async (req, res) => {
     try {
-        console.log(req.query);
         const feeds = await Feed.find({})
             .populate("user")
             .sort({ createdAt: -1 });
-        const response = [];
+        const user = await User.findById(req.user.id);
+        let response = [];
         feeds.forEach((feed) => {
             let likedByUser = false;
             if (feed.likedBy.includes(req.user.id)) {
@@ -58,12 +60,27 @@ router.get("/", middleware, async (req, res) => {
             }
             response.push({ ...feed._doc, likedByUser });
         });
-        if (req.query.sort) {
-            if (req.query.sort === "likes:desc") {
+        if (req.query.filter) {
+            if (req.query.filter === "likes:desc") {
                 response.sort((a, b) => {
                     return b.likedBy.length - a.likedBy.length;
                 });
+            } else if (req.query.filter === "likes:asc") {
+                response.sort((a, b) => {
+                    return a.likedBy.length - b.likedBy.length;
+                });
+            } else if (req.query.filter === "following") {
+                console.log("here");
+                const followingList = user.following;
+                response = response.filter((feed) => {
+                    return followingList.includes(feed.user._id);
+                });
             }
+        }
+        if (response.length === 0) {
+            return res.status(200).json({
+                message: "No feeds for selected Criteria",
+            });
         }
         res.send(response);
     } catch (error) {

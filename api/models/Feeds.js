@@ -12,7 +12,6 @@ const FeedSchema = new mongoose.Schema({
     },
     image: {
         type: Object,
-        required: true,
     },
     likedBy: [
         {
