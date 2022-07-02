@@ -15,9 +15,9 @@ import {
 } from "native-base";
 import React, { useState } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import Navbar from "../components/Navbar";
-import { EditPortfolio } from "../services/portfolio.service";
+import { EditPortfolio, GetSelfPortfolio } from "../services/portfolio.service";
 import { GetAllStocks, SendStock } from "../services/stocks.service";
 
 export default function createPortfolio() {
@@ -27,10 +27,15 @@ export default function createPortfolio() {
     const [formData, setData] = React.useState({});
     const [formDataEdit, setDataEdit] = React.useState({});
 
+    const queryClient = useQueryClient();
+
     // const [showModal, setShowModal] = useState(false);
 
     const { data: stocks } = useQuery("stocks", GetAllStocks);
     console.log(stocks, "stocks");
+
+    const { data: portfolio } = useQuery("portfolio", GetSelfPortfolio);
+    console.log(portfolio, "portfolio");
 
     const stockMutation = useMutation(SendStock, {
         onSuccess: (data) => {
@@ -54,21 +59,20 @@ export default function createPortfolio() {
 
     const editMutation = useMutation(EditPortfolio, {
         onSuccess: (data) => {
-            console.log(data);
             toast.show({
                 description: "Portfolio updated",
             });
+            queryClient.invalidateQueries("portfolio");
         },
         onError: (e) => {
-            toast.show({
-                description: e.response.data.errors[0].message,
-            });
+            // toast.show({
+            //     description: e.response.data.errors[0].message,
+            // });
             console.log(e);
         },
     });
 
     const onEdit = async () => {
-        console.log(formDataEdit);
         await editMutation.mutateAsync(formDataEdit);
     };
 
@@ -111,10 +115,12 @@ export default function createPortfolio() {
                             My Portfolio
                         </Text>
                         <Text color={"#6E34B8"} px={4} fontSize={12}>
-                            by Arushi Gandhi
+                            by {portfolio?.user.name}
                         </Text>
                         <Text px={4} fontSize={18}>
-                            This is my stock holder's portfolio. Welcome!
+                            {portfolio?.description
+                                ? portfolio?.description
+                                : "Click on the Edit button to give your portfolio a description"}
                             <Button
                                 m={4}
                                 p={0}
@@ -167,6 +173,26 @@ export default function createPortfolio() {
                         />
                     </Text>
                 </Button>
+                <Text
+                    fontSize={"16px"}
+                    italic
+                    color="coolGray.400"
+                    fontWeight={300}
+                >
+                    My Stock Portfolio
+                </Text>
+                {portfolio?.stocks.map((stock) => (
+                    <Text
+                        fontSize={"16px"}
+                        color="#6E34B8"
+                        fontWeight={300}
+                        bold
+                        pt={4}
+                    >
+                        • {stock.ticker} - {stock.quantity} Quantity -{" "}
+                        {stock.buyPrice} Buy Price
+                    </Text>
+                ))}
             </Container>
             <Center>
                 <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
