@@ -12,6 +12,7 @@ import Explore from "../screens/explore";
 import News from "../screens/news";
 import Profile from "../screens/profile";
 import SelfProfile from "../screens/selfProfile";
+import CreatePortfolio from "../screens/createPortfolio";
 import Setting from "../screens/setting";
 import { useSelector } from "react-redux";
 import { Screen1, Screen2, Screen3 } from "../screens/news";
@@ -133,9 +134,8 @@ function HomeTabs() {
 }
 
 export default function Navigator() {
-    // const { isLoggedIn } = useSelector((state) => state.user);
-    // console.log(isLoggedIn);
-    const isLoggedIn = true;
+    const { isLoggedIn } = useSelector((state) => state.user);
+    console.log(isLoggedIn);
 
     return (
         <>
@@ -160,6 +160,10 @@ export default function Navigator() {
                     <Stack.Screen name="Profile" component={Profile} />
                     <Stack.Screen name="Settings" component={Setting} />
                     <Stack.Screen name="SelfProfile" component={SelfProfile} />
+                    <Stack.Screen
+                        name="CreatePortfolio"
+                        component={CreatePortfolio}
+                    />
                 </Stack.Navigator>
             )}
         </>
