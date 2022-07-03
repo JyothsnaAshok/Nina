@@ -23,7 +23,7 @@ app.get("/test", (req, res) => {
     res.status(200).send({ message: "Backend APIs running" });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
