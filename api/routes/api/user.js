@@ -81,7 +81,10 @@ router.get("/:id", middleware, async (req, res) => {
 router.put("/", middleware, uploads.single("avatar"), async (req, res) => {
     const { name } = req.body;
     const avatar = req.file?.path;
-    const updateData = { name, updatedAt: new Date() };
+    const updateData = { updatedAt: new Date() };
+    if (name) {
+        updateData.name = name;
+    }
     try {
         const found = await User.findOne({ _id: req.user.id });
         if (!found) {
