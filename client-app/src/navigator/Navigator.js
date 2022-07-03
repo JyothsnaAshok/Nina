@@ -11,6 +11,7 @@ import Home from "../screens/home";
 import Explore from "../screens/explore";
 import Profile from "../screens/profile";
 import SelfProfile from "../screens/selfProfile";
+import CreatePortfolio from "../screens/createPortfolio";
 import Setting from "../screens/setting";
 import { useSelector } from "react-redux";
 import useMediaQuery from "../hooks/useMediaQuery";
@@ -162,6 +163,10 @@ export default function Navigator() {
                     <Stack.Screen name="Profile" component={Profile} />
                     <Stack.Screen name="Settings" component={Setting} />
                     <Stack.Screen name="SelfProfile" component={SelfProfile} />
+                    <Stack.Screen
+                        name="CreatePortfolio"
+                        component={CreatePortfolio}
+                    />
                 </Stack.Navigator>
             )}
         </>

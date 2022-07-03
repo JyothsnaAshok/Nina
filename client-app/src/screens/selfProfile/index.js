@@ -16,10 +16,7 @@ import logo from "../../../assets/logo.png";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { ScrollView } from "react-native";
-import {
-    EditPortfolio,
-    GetSelfPortfolio,
-} from "../../services/portfolio.service";
+import { UserData } from "../../services/auth.service";
 import { GetAllStocks, SendStock } from "../../services/stocks.service";
 
 export default function Home({ navigation }) {
@@ -27,8 +24,8 @@ export default function Home({ navigation }) {
 
     // const [showModal, setShowModal] = useState(false);
 
-    // const { data: stocks } = useQuery("stocks", GetAllStocks);
-    // console.log(stocks, "stocks");
+    const { data: user } = useQuery("user", UserData);
+    console.log(user, "user");
 
     const { data: portfolio } = useQuery("portfolio", GetSelfPortfolio);
     console.log(portfolio, "portfolio");
@@ -62,7 +59,9 @@ export default function Home({ navigation }) {
                             bg="green.500"
                             size={150}
                             source={{
-                                uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+                                uri:
+                                    user?.avatar?.url ||
+                                    "https://res.cloudinary.com/desoyd8gm/image/upload/v1656820924/default-avatar_jx9py0.jpg",
                             }}
                         >
                             AJ
@@ -74,7 +73,7 @@ export default function Home({ navigation }) {
                             mt="4"
                             textAlign={"center"}
                         >
-                            Jyothsna Ashok
+                            {user?.name}
                         </Heading>
                     </Box>
                 </VStack>
@@ -165,7 +164,7 @@ export default function Home({ navigation }) {
                         <HStack alignSelf={"center"}>
                             <VStack alignItems={"center"} px="3">
                                 <Text fontSize="3xl" mr={"2"}>
-                                    1K
+                                    {user?.followers.length}
                                 </Text>
                                 <Text fontSize="xl" mr={"2"}>
                                     Followers
@@ -174,7 +173,7 @@ export default function Home({ navigation }) {
                             <Divider orientation="vertical" />
                             <VStack alignItems={"center"} px="3">
                                 <Text fontSize="3xl" mr={"2"}>
-                                    100
+                                    {user?.followers.length}
                                 </Text>
                                 <Text fontSize="xl" mr={"2"}>
                                     Following
@@ -182,6 +181,9 @@ export default function Home({ navigation }) {
                             </VStack>
                         </HStack>
                         <Fab
+                            onPress={() => {
+                                navigation.navigate("CreatePortfolio");
+                            }}
                             bgColor={"#6E34B8"}
                             shadow={2}
                             size="sm"
