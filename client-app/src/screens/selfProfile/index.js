@@ -30,21 +30,34 @@ export default function Home({ navigation }) {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Box flex="1" px="4" mt="20">
                     <HStack alignItems={"center"}>
-                        <Icon
-                            as={<Ionicons name="arrow-back-outline" />}
-                            size={"xl"}
-                            color="#6E34B8"
-                            onPress={() => navigation.goBack()}
-                        />
-                        <Text color="#6e34b8" fontSize={"xl"} ml="4" mr="65%">
-                            My Profile
-                        </Text>
-                        <Icon
-                            as={<AntDesign name="setting" />}
-                            size={"xl"}
-                            color="#6E34B8"
-                            onPress={() => navigation.navigate("Settings")}
-                        />
+                        <Flex
+                            direction="row"
+                            alignItems="center"
+                            justify="space-between"
+                            width="100%"
+                        >
+                            <HStack>
+                                <Icon
+                                    as={<Ionicons name="arrow-back-outline" />}
+                                    size={"xl"}
+                                    color="#6E34B8"
+                                    onPress={() => navigation.goBack()}
+                                />
+                                <Text color="#6e34b8" fontSize={"xl"} ml="4">
+                                    My Profile
+                                </Text>
+                            </HStack>
+                            <HStack>
+                                <Icon
+                                    as={<AntDesign name="setting" />}
+                                    size={"xl"}
+                                    color="#6E34B8"
+                                    onPress={() =>
+                                        navigation.navigate("Settings")
+                                    }
+                                />
+                            </HStack>
+                        </Flex>
                     </HStack>
                 </Box>
 
@@ -195,18 +208,19 @@ export default function Home({ navigation }) {
                     </Box>
                 </VStack>
                 <VStack mt="10">
-                    <Heading fontSize="xl" mb="2" textAlign={"center"}>
+                    <Heading fontSize="xl" mb="2" textAlign={"center"} mt="10">
                         My Portfolios
                     </Heading>
-                    <Box width={"90%"} p="4" _text={{ fontSize: 40 }}>
-                        <Heading>Demo</Heading>
-                        <Text>Description</Text>
-                        <Link>View More</Link>
-                    </Box>
                     {portfolio ? (
-                        <Box>
-                            <Heading>Demo</Heading>
-                            <Text>Description</Text>
+                        <Box
+                            alignSelf={"center"}
+                            bgColor="#6e34B8"
+                            borderRadius={10}
+                            p="5"
+                            _text={{ color: "#fff" }}
+                            mt="6"
+                        >
+                            <Text>{portfolio.description}</Text>
                             <Link>View More</Link>
                         </Box>
                     ) : (
