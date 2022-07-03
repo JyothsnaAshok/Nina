@@ -122,7 +122,7 @@ export default function Login({ navigation }) {
                             htmlType="submit"
                             onPress={onFinish}
                         >
-                            Sign up
+                            Sign in
                         </Button>
 
                         <HStack mt="40" justifyContent="center">

@@ -22,7 +22,7 @@ export function Screen1({ navigation }) {
                 direction="row"
                 justifyContent="space-between"
                 alignItems="center"
-                mt={isDesktop ? "10" : 0}
+                // mt={isDesktop ? "10" : 0}
             >
                 <Flex
                     direction="row"
@@ -122,7 +122,7 @@ export function Screen2({ navigation }) {
                 direction="row"
                 justifyContent="space-between"
                 alignItems="center"
-                mt={isDesktop ? "10" : 0}
+                // mt={isDesktop ? "10" : 0}
             >
                 <Flex
                     direction="row"
@@ -221,7 +221,7 @@ export function Screen3({ navigation }) {
                 direction="row"
                 justifyContent="space-between"
                 alignItems="center"
-                mt={isDesktop ? "10" : 0}
+                // mt={isDesktop ? "10" : 0}
             >
                 <Flex
                     direction="row"
