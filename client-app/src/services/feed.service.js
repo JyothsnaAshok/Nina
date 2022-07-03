@@ -61,7 +61,7 @@ export const UpdateFollow = async (id) => {
         );
         return response.data;
     } catch (e) {
-        console.log(e);
+        throw e;
     }
 };
 
@@ -79,7 +79,7 @@ export const UpdateUnfollow = async (id) => {
         );
         return response.data;
     } catch (e) {
-        console.log(e);
+        throw e;
     }
 };
 

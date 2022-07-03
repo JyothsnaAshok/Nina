@@ -55,6 +55,10 @@ export default function Explore({ navigation }) {
             QueryClient.invalidateQueries("explore-trends");
         },
         onError: (e) => {
+            toast.show({
+                description:
+                    e?.response.data.errors[0].message || "Some Error Occured",
+            });
             console.log(e);
         },
     });
@@ -69,6 +73,10 @@ export default function Explore({ navigation }) {
             QueryClient.invalidateQueries("explore-trends");
         },
         onError: (e) => {
+            toast.show({
+                description:
+                    e?.response.data.errors[0].message || "Some Error Occured",
+            });
             console.log(e);
         },
     });
