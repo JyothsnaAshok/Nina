@@ -17,13 +17,6 @@ app.use(cors());
 
 app.use(express.json({ extended: false }));
 
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-    res.header("Access-Control-Allow-Headers", "Content-Type");
-    next();
-});
-
 app.use("/api", require("./routes"));
 
 app.get("/test", (req, res) => {
