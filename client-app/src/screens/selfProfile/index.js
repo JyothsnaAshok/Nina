@@ -182,6 +182,9 @@ export default function Home({ navigation }) {
                             </VStack>
                         </HStack>
                         <Fab
+                            onPress={() => {
+                                navigation.navigate("CreatePortfolio");
+                            }}
                             bgColor={"#6E34B8"}
                             shadow={2}
                             size="sm"
