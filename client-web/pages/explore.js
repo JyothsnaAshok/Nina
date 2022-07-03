@@ -26,7 +26,7 @@ import { useQuery } from "react-query";
 
 export default function explore() {
     const { data: portfolios } = useQuery("portfolios", GetAllPortfolios);
-    console.log(portfolios, "portfolios");
+
     return (
         <>
             <Navbar />

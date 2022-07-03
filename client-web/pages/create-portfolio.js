@@ -29,13 +29,9 @@ export default function createPortfolio() {
 
     const queryClient = useQueryClient();
 
-    // const [showModal, setShowModal] = useState(false);
-
     const { data: stocks } = useQuery("stocks", GetAllStocks);
-    console.log(stocks, "stocks");
 
     const { data: portfolio } = useQuery("portfolio", GetSelfPortfolio);
-    console.log(portfolio, "portfolio");
 
     const stockMutation = useMutation(SendStock, {
         onSuccess: (data) => {
@@ -45,15 +41,11 @@ export default function createPortfolio() {
             });
         },
         onError: (e) => {
-            // toast.show({
-            //     description: e.response.data.errors[0].message,
-            // });
             console.log(e);
         },
     });
 
     const addStock = async () => {
-        console.log(formData);
         await stockMutation.mutateAsync(formData);
     };
 
@@ -65,9 +57,6 @@ export default function createPortfolio() {
             queryClient.invalidateQueries("portfolio");
         },
         onError: (e) => {
-            // toast.show({
-            //     description: e.response.data.errors[0].message,
-            // });
             console.log(e);
         },
     });

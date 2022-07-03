@@ -1,1 +1,13 @@
-# SheStock
+## INTRODUCTION
+
+Maintainers: Jyothsna Ashok, Shivansh Vishwakarma, Arushi Gandhi
+
+Nina is the project we undertook at the iNeuron Hackathon for the fintech theme. We believe trading, as wonderful and full of opportunities it is, has an alarming problem. The community has a severe lack of women, only about 7% of women in India invest independently through self-learning. This provides with ample opportunity to create a platform for women to learn by example of other women who've been in this field for some time and can provide mentorship. The platform, a social media for traders of sorts, allows one to follow other traders, create our own portfolio, follow trending trading news, explore popular portfolios and so much more!
+
+## TECH STACK
+
+We have zealously dedicated our twenty four hours towards creating a web application using Next.js, a cross-platform mobile application using React-Native **which is fully functional on the web as well**, as well as a completely custom backend using Node.js, Express.js and MongoDB as our database.
+
+We'd like to throw special focus on the UI library that we used for both the frontends - NativeBase. It was a rocky starting learning how to use it and set it up, but we're proud to say that our codebases do not have a single line of CSS written by us and we've styled everything using NativeBase Library.
+
+## INSTALLATION

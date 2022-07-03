@@ -28,7 +28,6 @@ export default function loginPage() {
 
     const finishMutation = useMutation(SignIn, {
         onSuccess: (data) => {
-            console.log(data);
             dispatch(login(data));
             toast.show({
                 description: "Logged in successfully",
@@ -40,7 +39,6 @@ export default function loginPage() {
     });
 
     const onFinish = async () => {
-        console.log(formData);
         await finishMutation.mutateAsync(formData);
     };
 
@@ -51,15 +49,7 @@ export default function loginPage() {
             justifyContent="center"
             height={"100vh"}
         >
-            {/* <HStack> */}
-            <VStack
-                safeArea
-                // mt={150}
-                width={"30%"}
-                // shadow="6"
-                p={10}
-                borderRadius={12}
-            >
+            <VStack safeArea width={"30%"} p={10} borderRadius={12}>
                 <Heading size="lg" color="purple.800">
                     Missing us already? Log in to continue
                 </Heading>
@@ -87,7 +77,6 @@ export default function loginPage() {
                             variant="filled"
                             size="xl"
                             borderRadius={6}
-                            //   backgroundColor={"white"}
                             onChangeText={(value) =>
                                 setData({ ...formData, password: value })
                             }
@@ -117,7 +106,6 @@ export default function loginPage() {
             >
                 <Image src="/images/whitelogo.svg" width={200} height={200} />
             </VStack>
-            {/* </HStack> */}
         </Flex>
     );
 }
