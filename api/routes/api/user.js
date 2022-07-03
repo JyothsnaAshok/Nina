@@ -102,7 +102,9 @@ router.put("/", middleware, uploads.single("avatar"), async (req, res) => {
                 url,
             };
         }
-        found.name = updateData.name;
+        if (updateData.name) {
+            found.name = updateData.name;
+        }
         found.updatedAt = updateData.updatedAt;
         if (updateData.avatar) {
             found.avatar = updateData.avatar;
