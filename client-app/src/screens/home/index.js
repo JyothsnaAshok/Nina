@@ -18,8 +18,70 @@ import { AntDesign, Feather } from "@expo/vector-icons";
 import { SwipeablePanel } from "rn-swipeable-panel";
 import { StyleSheet, ScrollView, Platform } from "react-native";
 import useMediaQuery from "../../hooks/useMediaQuery";
+// import Navbar from ".../components/Navbar";
 
 export default function Home({ navigation }) {
+    //API calls for the web version of our home page
+    const [formData, setData] = React.useState({});
+    const [follow, setFollow] = React.useState({});
+    const toast = useToast();
+
+    const finishMutation = useMutation(SendPost, {
+        onSuccess: (data) => {
+            console.log(data);
+            toast.show({
+                description: "Post sent successfully",
+            });
+        },
+        onError: (e) => {
+            console.log(e);
+        },
+    });
+
+    const onFinish = async () => {
+        console.log(formData);
+        await finishMutation.mutateAsync(formData);
+    };
+
+    const { data: posts } = useQuery("posts", GetPosts);
+    console.log(posts, "posts");
+
+    const { data: trends } = useQuery("trends", GetTrendPosts);
+    console.log(trends, "trends");
+
+    const followMutation = useMutation(UpdateFollow, {
+        onSuccess: (data) => {
+            console.log(data);
+            toast.show({
+                description: "Followed",
+            });
+        },
+        onError: (e) => {
+            console.log(e);
+        },
+    });
+
+    const unfollowMutation = useMutation(UpdateUnfollow, {
+        onSuccess: (data) => {
+            console.log(data);
+            toast.show({
+                description: "Unfollowed",
+            });
+        },
+        onError: (e) => {
+            console.log(e);
+        },
+    });
+
+    const onFollow = async (id) => {
+        await followMutation.mutateAsync(id);
+    };
+
+    const onUnfollow = async (id) => {
+        await unfollowMutation.mutateAsync(id);
+    };
+    //ends here
+
     const [panelProps, setPanelProps] = useState({
         fullWidth: true,
         openLarge: true,
