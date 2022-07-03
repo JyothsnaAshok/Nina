@@ -22,6 +22,11 @@ import { SwipeablePanel } from "rn-swipeable-panel";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import { StyleSheet, ScrollView } from "react-native";
 import { AiOutlineFire, AiOutlinePlus } from "react-icons/ai";
+import {
+    GetTrendPosts,
+    UpdateFollow,
+    UpdateUnfollow,
+} from "../../services/feed.service";
 
 export default function Explore({ navigation }) {
     const { data: trends } = useQuery("trends", GetTrendPosts);
