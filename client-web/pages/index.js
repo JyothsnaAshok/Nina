@@ -67,6 +67,10 @@ export default function App() {
             });
         },
         onError: (e) => {
+            toast.show({
+                description:
+                    e?.response.data.errors[0].message || "Some Error Occured",
+            });
             console.log(e);
         },
     });
@@ -79,6 +83,10 @@ export default function App() {
             });
         },
         onError: (e) => {
+            toast.show({
+                description:
+                    e?.response.data.errors[0].message || "Some Error Occured",
+            });
             console.log(e);
         },
     });
