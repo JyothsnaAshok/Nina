@@ -58,14 +58,25 @@ router.post("/", middleware, async (req, res) => {
  */
 router.get("/myfolio", middleware, async (req, res) => {
     const { id } = req.user;
-    const portfolio = await Portfolio.findOne({ user: id }).populate({
+    let portfolio = await Portfolio.findOne({ user: id }).populate({
         path: "user",
         select: ["name", "avatar"],
     });
+    const user = await User.findOne({ _id: id });
     if (!portfolio) {
-        return res
-            .status(400)
-            .json({ errors: [{ message: "Portfolio does not exist" }] });
+        portfolio = new Portfolio({
+            user: id,
+            description: "This is my portfolio",
+        });
+        await portfolio.save();
+        portfolio = await Portfolio.findOne({ user: id }).populate({
+            path: "user",
+            select: ["name", "avatar"],
+        });
+        await User.findOneAndUpdate(
+            { _id: id },
+            { portfolio: portfolio._id, updatedAt: Date.now() }
+        );
     }
     res.send(portfolio);
 });
