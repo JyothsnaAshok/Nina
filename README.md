@@ -14,24 +14,23 @@ We'd like to throw special focus on the UI library that we used for both the fro
 
 Clone the Repository
 
-Cd into the API directory
-Run npm i
-Run npm run dev
+-   Cd into the API directory
+-   Run npm i
+-   Run npm run dev
 
 Cd out of the API back to base
 
-Cd into the Client-app directory
-Run npm i
-Run npm install -g expo-cli
-Run npm start
+-   Cd into the Client-app directory
+-   Run npm i
+-   Run npm install -g expo-cli
+-   Run npm start
 
 Cd out of the Client-app back to base
 
-Cd into the Client-web directory
-Run npm i
-Run npm run dev
+-   Cd into the Client-web directory
+-   Run npm i
+-   Run npm run dev
 
-The backend would run at 
-http://localhost:8080
-The web frontend would run at 
-http://localhost:3000
+The backend would run at http://localhost:8080/
+
+The web frontend would run at http://localhost:3000/
