@@ -77,6 +77,8 @@ export default function Home({ navigation }) {
                             Jyothsna Ashok
                         </Heading>
                     </Box>
+                </VStack>
+                <VStack>
                     <Box
                         flex="1"
                         px="4"
