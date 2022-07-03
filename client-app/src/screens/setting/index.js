@@ -22,19 +22,6 @@ import { SwipeablePanel } from "rn-swipeable-panel";
 import { StyleSheet, ScrollView } from "react-native";
 
 export default function Home({ navigation }) {
-    const [panelProps, setPanelProps] = useState({
-        fullWidth: true,
-        openLarge: true,
-        showCloseButton: true,
-        onClose: () => closePanel(),
-        onPressCloseButton: () => closePanel(),
-    });
-    const [isPanelActive, setIsPanelActive] = useState(false);
-
-    const closePanel = () => {
-        setIsPanelActive(false);
-    };
-
     return (
         <>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -84,7 +71,12 @@ export default function Home({ navigation }) {
                     >
                         AJ
                     </Avatar>
-                    <Button borderRadius={10} bgColor="#6E34B8" mt="3">
+                    <Button
+                        borderRadius={10}
+                        bgColor="#6E34B8"
+                        mt="3"
+                        size={"sm"}
+                    >
                         <HStack alignItems={"center"}>
                             <Text mr="2" color={"#fff"}>
                                 Edit Profile Picture
@@ -134,16 +126,3 @@ export default function Home({ navigation }) {
         </>
     );
 }
-
-const styles = StyleSheet.create({
-    shadow: {
-        shadowColor: "#272246",
-        shadowOffset: {
-            width: 0,
-            height: 8,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 0,
-    },
-});

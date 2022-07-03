@@ -38,7 +38,7 @@ export default function Home({ navigation }) {
     return (
         <>
             {isDesktop ? (
-                "hiIII"
+                "hello"
             ) : (
                 <>
                     <ScrollView showsVerticalScrollIndicator={false}>

@@ -131,7 +131,7 @@ function HomeTabs() {
 }
 
 export default function Navigator() {
-    const isLoggedIn = false;
+    const isLoggedIn = true;
     return (
         <>
             {isLoggedIn ? (
@@ -153,8 +153,8 @@ export default function Navigator() {
                 >
                     <Stack.Screen name="Home" component={HomeTabs} />
                     <Stack.Screen name="Profile" component={Profile} />
-                    <Stack.Screen name="SelfProfile" component={SelfProfile} />
                     <Stack.Screen name="Settings" component={Setting} />
+                    <Stack.Screen name="SelfProfile" component={SelfProfile} />
                 </Stack.Navigator>
             )}
         </>

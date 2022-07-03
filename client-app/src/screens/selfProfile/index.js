@@ -177,16 +177,21 @@ export default function Home({ navigation }) {
                             </Text>
                         </VStack>
                     </HStack>
+                    <Fab
+                        bgColor={"#6E34B8"}
+                        shadow={2}
+                        size="sm"
+                        icon={
+                            <Icon
+                                color="white"
+                                as={AntDesign}
+                                name="plus"
+                                size="sm"
+                            />
+                        }
+                    />
                 </Box>
             </ScrollView>
-            <Fab
-                bgColor={"#6E34B8"}
-                shadow={2}
-                size="sm"
-                icon={
-                    <Icon color="white" as={AntDesign} name="plus" size="sm" />
-                }
-            />
         </>
     );
 }
