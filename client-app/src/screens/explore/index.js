@@ -10,6 +10,7 @@ import {
     HStack,
     Flex,
     Icon,
+    useToast,
     Button,
     Center,
     Heading,
@@ -20,10 +21,13 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { SwipeablePanel } from "rn-swipeable-panel";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import { StyleSheet, ScrollView } from "react-native";
-import { GetTrendPosts } from "../../services/feed.service";
+import { AiOutlineFire, AiOutlinePlus } from "react-icons/ai";
 
 export default function Explore({ navigation }) {
     const { data: trends } = useQuery("trends", GetTrendPosts);
+    const [follow, setFollow] = React.useState({});
+    const toast = useToast();
+    const QueryClient = useQueryClient();
     console.log(trends, "trends");
 
     const getRandomPost = () => {
@@ -35,6 +39,38 @@ export default function Explore({ navigation }) {
 
     const [randomPost, setRandomPost] = React.useState(getRandomPost());
     console.log(randomPost, "randomPost");
+    const followMutation = useMutation(UpdateFollow, {
+        onSuccess: (data) => {
+            console.log(data);
+            toast.show({
+                description: "Followed",
+            });
+            QueryClient.invalidateQueries("posts");
+        },
+        onError: (e) => {
+            console.log(e);
+        },
+    });
+
+    const unfollowMutation = useMutation(UpdateUnfollow, {
+        onSuccess: (data) => {
+            console.log(data);
+            toast.show({
+                description: "Unfollowed",
+            });
+            QueryClient.invalidateQueries("posts");
+        },
+        onError: (e) => {
+            console.log(e);
+        },
+    });
+    const onFollow = async (id) => {
+        await followMutation.mutateAsync(id);
+    };
+
+    const onUnfollow = async (id) => {
+        await unfollowMutation.mutateAsync(id);
+    };
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <Box flex="1" bgColor={"#ffffff"} px="4" mt={isDesktop ? "10" : 0}>
@@ -105,13 +141,52 @@ export default function Explore({ navigation }) {
                             </Text>
                         </VStack>
                         <Button bgColor={"#6E34B8"} ml="24">
-                            <HStack alignItems={"center"}>
-                                <Icon
-                                    as={<AntDesign name="plus" size={20} />}
-                                    color="#ffffff"
-                                    mr="2"
-                                />
-                                <Text color={"#ffffff"}>Follow</Text>
+                            <HStack>
+                                <Button
+                                    onPress={
+                                        // () =>
+                                        // onFollow(posts[index]?.user._id)
+                                        randomPost?.followedByUser
+                                            ? () => {
+                                                  onUnfollow(
+                                                      randomPost?.user._id
+                                                  );
+                                                  setFollow(false);
+                                              }
+                                            : () => {
+                                                  onFollow(
+                                                      randomPost?.user._id
+                                                  );
+                                                  setFollow(true);
+                                              }
+                                    }
+                                    variant={"outline"}
+                                    borderRadius="6"
+                                    py={1}
+                                    width={"8rem"}
+                                    rightIcon={
+                                        <Icon
+                                            size="5"
+                                            color="coolGray.500"
+                                            as={
+                                                <AiOutlinePlus
+                                                    style={{
+                                                        marginLeft: "0.5rem",
+                                                        fontSize: "1rem",
+                                                        color: "#1d1d1d",
+                                                    }}
+                                                />
+                                            }
+                                        />
+                                    }
+                                >
+                                    <Text color="#1d1d1d">
+                                        {randomPost?.followedByUser
+                                            ? "Unfollow"
+                                            : "Follow"}
+                                        {/* {follow ? "Unfollow" : "Follow"} */}
+                                    </Text>
+                                </Button>
                             </HStack>
                         </Button>
                     </HStack>
