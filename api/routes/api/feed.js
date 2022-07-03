@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const mongoose = require("mongoose");
 const Feed = require("../../models/Feeds");
 const User = require("../../models/Users");
 const multer = require("multer");
@@ -58,12 +59,17 @@ router.get("/", middleware, async (req, res) => {
         feeds.forEach((feed) => {
             let likedByUser = false;
             let followedByUser = false;
-            if (feed.likedBy.includes(req.user.id)) {
+            console.log(feed);
+            // convert req.user.id to objectId
+            const userId = mongoose.Types.ObjectId(req.user.id);
+            const feedUserId = mongoose.Types.ObjectId(feed.user._id);
+            if (feed.likedBy.includes(userId)) {
                 likedByUser = true;
             }
             if (user.following.includes(feed.user.id)) {
                 followedByUser = true;
             }
+            console.log(likedByUser, followedByUser);
             response.push({ ...feed._doc, likedByUser, followedByUser });
         });
         if (req.query.filter) {

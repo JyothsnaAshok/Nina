@@ -1,4 +1,4 @@
-import { BACKEND_URL } from "../constants";
+import { BACKEND_URL } from "../../constants";
 import axios from "axios";
 
 export const GetAllStocks = async () => {

@@ -28,7 +28,7 @@ export const GetPosts = async () => {
         // const token = user.user.token;
         // console.log(token, "lesoooo");
         const token = await AsyncStorage.getItem("token");
-
+        console.log(token, "lesoooo");
         const response = await axios.get(`${BACKEND_URL}/api/feed`, {
             headers: {
                 "x-auth-token": token,
@@ -68,6 +68,7 @@ export const UpdateFollow = async (id) => {
         // const token = user.user.token;
         // console.log(token, "token put");
         const token = await AsyncStorage.getItem("token");
+        console.log(token, "token put");
         const response = await axios.put(
             `${BACKEND_URL}/api/user/follow/${id}`,
             "hello",
