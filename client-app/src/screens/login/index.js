@@ -15,12 +15,39 @@ import {
     Stack,
     Image,
     Icon,
+    useToast,
 } from "native-base";
 import logo from "../../../assets/logo.png";
 import { AntDesign, Feather } from "@expo/vector-icons";
+import { useMutation } from "react-query";
+import { SignIn } from "../../services/auth.service";
+import { login } from "../../store/user.slice";
+import { useDispatch } from "react-redux";
 
 export default function Login({ navigation }) {
     const [show, setShow] = React.useState(false);
+
+    const [formData, setData] = React.useState({});
+    const dispatch = useDispatch();
+    const toast = useToast();
+
+    const finishMutation = useMutation(SignIn, {
+        onSuccess: (data) => {
+            console.log(data);
+            dispatch(login(data));
+            toast.show({
+                description: "Logged in successfully",
+            });
+        },
+        onError: (e) => {
+            console.log(e);
+        },
+    });
+
+    const onFinish = async () => {
+        console.log(formData);
+        await finishMutation.mutateAsync(formData);
+    };
 
     return (
         <Center flex={1} px="3" bgColor={"#ffffff"}>
@@ -47,6 +74,9 @@ export default function Login({ navigation }) {
                         <FormControl>
                             <Input
                                 placeholder="Email"
+                                onChangeText={(value) =>
+                                    setData({ ...formData, email: value })
+                                }
                                 InputLeftElement={
                                     <Icon
                                         ml="3"
@@ -79,10 +109,19 @@ export default function Login({ navigation }) {
                                         }
                                     />
                                 }
+                                onChangeText={(value) =>
+                                    setData({ ...formData, password: value })
+                                }
                             />
                         </FormControl>
 
-                        <Button mt="2" bg="violet.700" borderRadius={10}>
+                        <Button
+                            mt="2"
+                            bg="violet.700"
+                            borderRadius={10}
+                            htmlType="submit"
+                            onPress={onFinish}
+                        >
                             Sign up
                         </Button>
 

@@ -35,6 +35,7 @@ export default function Signup({ navigation }) {
             toast.show({
                 description: "Registered in successfully",
             });
+            navigation.navigate("Login");
         },
         onError: (e) => {
             console.log("reached");

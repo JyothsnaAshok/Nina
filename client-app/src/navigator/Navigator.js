@@ -13,7 +13,9 @@ import News from "../screens/news";
 import Profile from "../screens/profile";
 import SelfProfile from "../screens/selfProfile";
 import Setting from "../screens/setting";
+import { useSelector } from "react-redux";
 import { Screen1, Screen2, Screen3 } from "../screens/news";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -131,10 +133,12 @@ function HomeTabs() {
 }
 
 export default function Navigator() {
-    const isLoggedIn = false;
+    const { isLoggedIn } = useSelector((state) => state.user);
+    console.log(isLoggedIn);
+
     return (
         <>
-            {isLoggedIn ? (
+            {!isLoggedIn ? (
                 <Stack.Navigator
                     initialRouteName="Welcome"
                     screenOptions={{
