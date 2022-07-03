@@ -51,7 +51,7 @@ router.get("/", middleware, async (req, res) => {
         const feeds = await Feed.find({})
             .populate("user")
             .sort({ createdAt: -1 });
-        const user = await User.findById(req.user.id).populate("following");
+        const user = await User.findById(req.user.id);
         let response = [];
         feeds.forEach((feed) => {
             let likedByUser = false;
@@ -59,7 +59,7 @@ router.get("/", middleware, async (req, res) => {
             if (feed.likedBy.includes(req.user.id)) {
                 likedByUser = true;
             }
-            if (user.following.includes(feed.user._id)) {
+            if (user.following.includes(feed.user.id)) {
                 followedByUser = true;
             }
             response.push({ ...feed._doc, likedByUser, followedByUser });
