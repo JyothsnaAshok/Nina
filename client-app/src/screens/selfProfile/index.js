@@ -17,7 +17,7 @@ import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { useQuery, useQueryClient } from "react-query";
 import { ScrollView } from "react-native";
 import { UserData } from "../../services/auth.service";
-
+import { GetSelfPortfolio } from "../../services/portfolio.service";
 export default function Home({ navigation }) {
     const queryClient = useQueryClient();
 
