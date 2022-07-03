@@ -15,7 +15,6 @@ import {
     Heading,
 } from "native-base";
 import moment from "moment";
-import logo from "../../../assets/logo.png";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { SwipeablePanel } from "rn-swipeable-panel";
