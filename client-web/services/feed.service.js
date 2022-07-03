@@ -6,14 +6,12 @@ export const SendPost = async (body) => {
         let { user } = JSON.parse(localStorage.getItem("persist:root"));
         user = JSON.parse(user);
         const token = user.user.token;
-        console.log(token, BACKEND_URL, body);
         const response = await axios.post(`${BACKEND_URL}/api/feed`, body, {
             headers: {
                 "x-auth-token": token,
             },
         });
-        console.log(response.data);
-        return null;
+        return response.data;
     } catch (e) {
         console.log(e);
     }
@@ -24,7 +22,6 @@ export const GetPosts = async () => {
         let { user } = JSON.parse(localStorage.getItem("persist:root"));
         user = JSON.parse(user);
         const token = user.user.token;
-        console.log(token);
         const response = await axios.get(`${BACKEND_URL}/api/feed`, {
             headers: {
                 "x-auth-token": token,
@@ -41,7 +38,6 @@ export const GetTrendPosts = async () => {
         let { user } = JSON.parse(localStorage.getItem("persist:root"));
         user = JSON.parse(user);
         const token = user.user.token;
-        console.log(token);
         const response = await axios.get(
             `${BACKEND_URL}/api/feed?filter=likes:desc`,
             {
@@ -61,7 +57,6 @@ export const UpdateFollow = async (id) => {
         let { user } = JSON.parse(localStorage.getItem("persist:root"));
         user = JSON.parse(user);
         const token = user.user.token;
-        console.log(token, "token put");
         const response = await axios.put(
             `${BACKEND_URL}/api/user/follow/${id}`,
             "hello",
@@ -82,7 +77,6 @@ export const UpdateUnfollow = async (id) => {
         let { user } = JSON.parse(localStorage.getItem("persist:root"));
         user = JSON.parse(user);
         const token = user.user.token;
-        console.log(token, "token put");
         const response = await axios.put(
             `${BACKEND_URL}/api/user/unfollow/${id}`,
             "helloarushi",

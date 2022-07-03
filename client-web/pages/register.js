@@ -30,30 +30,17 @@ export default function register() {
 
     const finishMutation = useMutation(SignUp, {
         onSuccess: (data) => {
-            // message.success("Successfully Registered!");
-            console.log(data);
             dispatch(login(data));
             toast.show({
                 description: "Registered in successfully",
             });
         },
         onError: (e) => {
-            console.log("reached");
-
             console.log(e);
-
-            // message.error("Registration Failed");
-            // message.error(e.response.data.message);
         },
     });
 
     const onFinish = async () => {
-        console.log(formData);
-        // const data = {
-        //     name: values.name,
-        //     email: values.email,
-        //     password: values.password,
-        // };
         await finishMutation.mutateAsync(formData);
     };
 

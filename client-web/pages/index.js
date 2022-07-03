@@ -24,7 +24,6 @@ import {
 } from "native-base";
 import Navbar from "../components/Navbar";
 import { BsSuitHeartFill, BsChatLeftQuote } from "react-icons/bs";
-import { BiImageAdd, BiSearch } from "react-icons/bi";
 import { AiOutlineFire, AiOutlinePlus } from "react-icons/ai";
 import {
     GetPosts,
@@ -44,7 +43,6 @@ export default function App() {
 
     const finishMutation = useMutation(SendPost, {
         onSuccess: (data) => {
-            console.log(data);
             toast.show({
                 description: "Post sent successfully",
             });
@@ -55,19 +53,15 @@ export default function App() {
     });
 
     const onFinish = async () => {
-        console.log(formData);
         await finishMutation.mutateAsync(formData);
     };
 
     const { data: posts } = useQuery("posts", GetPosts);
-    console.log(posts, "posts");
 
     const { data: trends } = useQuery("trends", GetTrendPosts);
-    console.log(trends, "trends");
 
     const followMutation = useMutation(UpdateFollow, {
         onSuccess: (data) => {
-            console.log(data);
             toast.show({
                 description: "Followed",
             });
