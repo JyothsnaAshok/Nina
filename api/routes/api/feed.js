@@ -13,10 +13,8 @@ const { uploadImage } = require("../../utils/initialiseCloudinary");
  */
 router.post("/", middleware, uploads.single("image"), async (req, res) => {
     try {
-        console.log("backend");
         const { text } = req.body;
         const userId = req.user.id;
-        console.log(req.body);
         const userDetails = await User.findById(userId);
         if (!userDetails) {
             return res.status(400).json({
