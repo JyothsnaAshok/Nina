@@ -9,7 +9,6 @@ import Login from "../screens/login";
 import Signup from "../screens/signup";
 import Home from "../screens/home";
 import Explore from "../screens/explore";
-import News from "../screens/news";
 import Profile from "../screens/profile";
 import SelfProfile from "../screens/selfProfile";
 import CreatePortfolio from "../screens/createPortfolio";
@@ -53,9 +52,9 @@ function HomeTabs() {
                 tabBarShowLabel: false,
                 headerShown: false,
                 tabBarStyle: {
-                    display: isDesktop ? "none" : "flex",
                     position: "absolute",
-                    bottom: 40,
+                    bottom: isDesktop ? 0 : 20,
+                    top: isDesktop ? 6 : 20,
                     left: 20,
                     right: 20,
                     elevation: 0,

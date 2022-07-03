@@ -18,6 +18,7 @@ import moment from "moment";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { SwipeablePanel } from "rn-swipeable-panel";
+import useMediaQuery from "../../hooks/useMediaQuery";
 import { StyleSheet, ScrollView } from "react-native";
 import { GetTrendPosts } from "../../services/feed.service";
 
@@ -30,11 +31,13 @@ export default function Explore({ navigation }) {
         return trends[randomIndex];
     };
 
+    const isDesktop = useMediaQuery("(min-width: 960px)");
+
     const [randomPost, setRandomPost] = React.useState(getRandomPost());
     console.log(randomPost, "randomPost");
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
-            <Box flex="1" bgColor={"#ffffff"} px="4">
+            <Box flex="1" bgColor={"#ffffff"} px="4" mt={isDesktop ? "10" : 0}>
                 <Box pt="5">
                     <Flex
                         direction="row"
