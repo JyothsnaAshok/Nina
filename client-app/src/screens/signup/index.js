@@ -44,15 +44,15 @@ export default function Signup({ navigation }) {
         },
     });
 
-    // const onFinish = async () => {
-    //     console.log(formData);
-    //     // const data = {
-    //     //     name: values.name,
-    //     //     email: values.email,
-    //     //     password: values.password,
-    //     // };
-    //     // await finishMutation.mutateAsync(formData);
-    // };
+    const onFinish = async () => {
+        console.log(formData);
+        // const data = {
+        //     name: values.name,
+        //     email: values.email,
+        //     password: values.password,
+        // };
+        await finishMutation.mutateAsync(formData);
+    };
 
     const [show, setShow] = React.useState(false);
     const [showConfirm, setShowConfirm] = React.useState(false);
@@ -104,6 +104,9 @@ export default function Signup({ navigation }) {
                                         as={<AntDesign name="mail" />}
                                     />
                                 }
+                                onChangeText={(value) =>
+                                    setData({ ...formData, email: value })
+                                }
                                 borderRadius={10}
                                 bg="#F2F2F2"
                                 borderColor={"#F2F2F2"}
@@ -119,6 +122,9 @@ export default function Signup({ navigation }) {
                                 InputLeftElement={
                                     <Icon ml="3" as={<Feather name="key" />} />
                                 }
+                                onChangeText={(value) =>
+                                    setData({ ...formData, password: value })
+                                }
                                 InputRightElement={
                                     <Icon
                                         mr="3"
@@ -132,36 +138,12 @@ export default function Signup({ navigation }) {
                                 }
                             />
                         </FormControl>
-                        <FormControl>
-                            <Input
-                                borderRadius={10}
-                                bg="#F2F2F2"
-                                type="password"
-                                placeholder="Confirm Password"
-                                borderColor={"#F2F2F2"}
-                                InputLeftElement={
-                                    <Icon ml="3" as={<Feather name="key" />} />
-                                }
-                                InputRightElement={
-                                    <Icon
-                                        mr="3"
-                                        onPress={() =>
-                                            setShowConfirm(!showConfirm)
-                                        }
-                                        as={
-                                            <Feather
-                                                name={
-                                                    showConfirm
-                                                        ? "eye"
-                                                        : "eye-off"
-                                                }
-                                            />
-                                        }
-                                    />
-                                }
-                            />
-                        </FormControl>
-                        <Button mt="2" bg="violet.700" borderRadius={10}>
+                        <Button
+                            mt="2"
+                            bg="violet.700"
+                            borderRadius={10}
+                            onPress={onFinish}
+                        >
                             Sign up
                         </Button>
 
