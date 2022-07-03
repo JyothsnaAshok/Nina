@@ -53,10 +53,6 @@ function HomeTabs() {
                 headerShown: false,
                 tabBarStyle: {
                     position: "absolute",
-                    // bottom: isDesktop ? 0 : 20,
-                    // top: isDesktop ? 6 : 0,
-                    // left: isDesktop ? 0 : 20,
-                    // right: isDesktop ? 0 : 20,
                     bottom: !isDesktop && 20,
                     left: 20,
                     right: 20,
