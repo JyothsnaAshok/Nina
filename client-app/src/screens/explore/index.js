@@ -16,19 +16,10 @@ import {
     Heading,
 } from "native-base";
 import moment from "moment";
-import {
-    GetPosts,
-    GetTrendPosts,
-    SendPost,
-    UpdateFollow,
-    UpdateUnfollow,
-    LikePost,
-    UnlikePost,
-} from "../../services/feed.service";
-import logo from "../../../assets/logo.png";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { SwipeablePanel } from "rn-swipeable-panel";
+import useMediaQuery from "../../hooks/useMediaQuery";
 import { StyleSheet, ScrollView } from "react-native";
 import { AiOutlineFire, AiOutlinePlus } from "react-icons/ai";
 
@@ -43,6 +34,8 @@ export default function Explore({ navigation }) {
         const randomIndex = Math.floor(Math.random() * trends.length);
         return trends[randomIndex];
     };
+
+    const isDesktop = useMediaQuery("(min-width: 960px)");
 
     const [randomPost, setRandomPost] = React.useState(getRandomPost());
     console.log(randomPost, "randomPost");
@@ -80,7 +73,7 @@ export default function Explore({ navigation }) {
     };
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
-            <Box flex="1" bgColor={"#ffffff"} px="4">
+            <Box flex="1" bgColor={"#ffffff"} px="4" mt={isDesktop ? "10" : 0}>
                 <Box pt="5">
                     <Flex
                         direction="row"

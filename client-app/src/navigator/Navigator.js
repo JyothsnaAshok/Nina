@@ -9,9 +9,9 @@ import Login from "../screens/login";
 import Signup from "../screens/signup";
 import Home from "../screens/home";
 import Explore from "../screens/explore";
-import News from "../screens/news";
 import Profile from "../screens/profile";
 import SelfProfile from "../screens/selfProfile";
+import CreatePortfolio from "../screens/createPortfolio";
 import Setting from "../screens/setting";
 import { useSelector } from "react-redux";
 import useMediaQuery from "../hooks/useMediaQuery";
@@ -52,11 +52,15 @@ function HomeTabs() {
                 tabBarShowLabel: false,
                 headerShown: false,
                 tabBarStyle: {
-                    display: isDesktop ? "none" : "flex",
                     position: "absolute",
-                    bottom: 40,
+                    // bottom: isDesktop ? 0 : 20,
+                    // top: isDesktop ? 6 : 0,
+                    // left: isDesktop ? 0 : 20,
+                    // right: isDesktop ? 0 : 20,
+                    bottom: !isDesktop && 20,
                     left: 20,
                     right: 20,
+                    top: isDesktop && 6,
                     elevation: 0,
                     backgroundColor: "#2F1155",
                     borderRadius: 25,
@@ -163,6 +167,10 @@ export default function Navigator() {
                     <Stack.Screen name="Profile" component={Profile} />
                     <Stack.Screen name="Settings" component={Setting} />
                     <Stack.Screen name="SelfProfile" component={SelfProfile} />
+                    <Stack.Screen
+                        name="CreatePortfolio"
+                        component={CreatePortfolio}
+                    />
                 </Stack.Navigator>
             )}
         </>
