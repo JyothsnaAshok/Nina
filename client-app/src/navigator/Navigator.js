@@ -133,8 +133,9 @@ function HomeTabs() {
 }
 
 export default function Navigator() {
-    const { isLoggedIn } = useSelector((state) => state.user);
-    console.log(isLoggedIn);
+    // const { isLoggedIn } = useSelector((state) => state.user);
+    // console.log(isLoggedIn);
+    const isLoggedIn = true;
 
     return (
         <>

@@ -23,6 +23,7 @@ import { useMutation } from "react-query";
 import { SignIn } from "../../services/auth.service";
 import { login } from "../../store/user.slice";
 import { useDispatch } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Login({ navigation }) {
     const [show, setShow] = React.useState(false);
@@ -32,9 +33,10 @@ export default function Login({ navigation }) {
     const toast = useToast();
 
     const finishMutation = useMutation(SignIn, {
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             console.log(data);
             dispatch(login(data));
+            await AsyncStorage.setItem("token", data.token);
             toast.show({
                 description: "Logged in successfully",
             });

@@ -12,6 +12,7 @@
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
     "@native-base/icons": "0.0.11",
+    "@react-native-async-storage/async-storage": "~1.17.3",
     "@react-navigation/bottom-tabs": "^6.3.1",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/stack": "^6.2.1",
@@ -23,6 +24,7 @@
     "native-base": "^3.4.7",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-icons": "^4.4.0",
     "react-native": "0.68.2",
     "react-native-gesture-handler": "~2.2.1",
     "react-native-reanimated": "~2.8.0",
@@ -34,8 +36,7 @@
     "react-redux": "^8.0.2",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.1",
-    "rn-swipeable-panel": "^1.2.7",
-    "@react-native-async-storage/async-storage": "~1.17.3"
+    "rn-swipeable-panel": "^1.2.7"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
