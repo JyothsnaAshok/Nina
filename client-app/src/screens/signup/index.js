@@ -15,11 +15,45 @@ import {
     Stack,
     Image,
     Icon,
+    useToast,
 } from "native-base";
+import { useMutation } from "react-query";
+import { SignUp } from "../../services/auth.service";
+import { login } from "../../store/user.slice";
 import logo from "../../../assets/logo.png";
+import { useDispatch } from "react-redux";
 import { AntDesign, Feather } from "@expo/vector-icons";
 
 export default function Signup({ navigation }) {
+    const [formData, setData] = React.useState({});
+    const dispatch = useDispatch();
+    const toast = useToast();
+
+    const finishMutation = useMutation(SignUp, {
+        onSuccess: (data) => {
+            console.log(data);
+            toast.show({
+                description: "Registered in successfully",
+            });
+        },
+        onError: (e) => {
+            console.log("reached");
+            console.log(e);
+            // message.error("Registration Failed");
+            // message.error(e.response.data.message);
+        },
+    });
+
+    const onFinish = async () => {
+        console.log(formData);
+        // const data = {
+        //     name: values.name,
+        //     email: values.email,
+        //     password: values.password,
+        // };
+        await finishMutation.mutateAsync(formData);
+    };
+
     const [show, setShow] = React.useState(false);
     const [showConfirm, setShowConfirm] = React.useState(false);
     return (
@@ -46,12 +80,32 @@ export default function Signup({ navigation }) {
                     <VStack space={3} mt="5">
                         <FormControl>
                             <Input
-                                placeholder="Email"
+                                placeholder="Name"
+                                onChangeText={(value) =>
+                                    setData({ ...formData, name: value })
+                                }
                                 InputLeftElement={
                                     <Icon
                                         ml="3"
                                         as={<AntDesign name="user" />}
                                     />
+                                }
+                                borderRadius={10}
+                                bg="#F2F2F2"
+                                borderColor={"#F2F2F2"}
+                            />
+                        </FormControl>
+                        <FormControl>
+                            <Input
+                                placeholder="Email"
+                                InputLeftElement={
+                                    <Icon
+                                        ml="3"
+                                        as={<AntDesign name="mail" />}
+                                    />
+                                }
+                                onChangeText={(value) =>
+                                    setData({ ...formData, email: value })
                                 }
                                 borderRadius={10}
                                 bg="#F2F2F2"
@@ -68,6 +122,9 @@ export default function Signup({ navigation }) {
                                 InputLeftElement={
                                     <Icon ml="3" as={<Feather name="key" />} />
                                 }
+                                onChangeText={(value) =>
+                                    setData({ ...formData, password: value })
+                                }
                                 InputRightElement={
                                     <Icon
                                         mr="3"
@@ -81,36 +138,12 @@ export default function Signup({ navigation }) {
                                 }
                             />
                         </FormControl>
-                        <FormControl>
-                            <Input
-                                borderRadius={10}
-                                bg="#F2F2F2"
-                                type="password"
-                                placeholder="Confirm Password"
-                                borderColor={"#F2F2F2"}
-                                InputLeftElement={
-                                    <Icon ml="3" as={<Feather name="key" />} />
-                                }
-                                InputRightElement={
-                                    <Icon
-                                        mr="3"
-                                        onPress={() =>
-                                            setShowConfirm(!showConfirm)
-                                        }
-                                        as={
-                                            <Feather
-                                                name={
-                                                    showConfirm
-                                                        ? "eye"
-                                                        : "eye-off"
-                                                }
-                                            />
-                                        }
-                                    />
-                                }
-                            />
-                        </FormControl>
-                        <Button mt="2" bg="violet.700" borderRadius={10}>
+                        <Button
+                            mt="2"
+                            bg="violet.700"
+                            borderRadius={10}
+                            onPress={onFinish}
+                        >
                             Sign up
                         </Button>
 
