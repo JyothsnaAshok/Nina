@@ -34,7 +34,6 @@ export default function Login({ navigation }) {
 
     const finishMutation = useMutation(SignIn, {
         onSuccess: async (data) => {
-            console.log(data);
             dispatch(login(data));
             await AsyncStorage.setItem("token", data.token);
             toast.show({
@@ -47,7 +46,6 @@ export default function Login({ navigation }) {
     });
 
     const onFinish = async () => {
-        console.log(formData);
         await finishMutation.mutateAsync(formData);
     };
 

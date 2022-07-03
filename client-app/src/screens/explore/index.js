@@ -30,10 +30,12 @@ import {
 
 export default function Explore({ navigation }) {
     const { data: trends } = useQuery("trends", GetTrendPosts);
+
     const [follow, setFollow] = React.useState({});
+
     const toast = useToast();
+
     const QueryClient = useQueryClient();
-    console.log(trends, "trends");
 
     const getRandomPost = () => {
         const randomIndex = Math.floor(Math.random() * trends.length);
@@ -43,10 +45,9 @@ export default function Explore({ navigation }) {
     const isDesktop = useMediaQuery("(min-width: 960px)");
 
     const [randomPost, setRandomPost] = React.useState(getRandomPost());
-    console.log(randomPost, "randomPost");
+
     const followMutation = useMutation(UpdateFollow, {
         onSuccess: (data) => {
-            console.log(data);
             toast.show({
                 description: "Followed",
             });

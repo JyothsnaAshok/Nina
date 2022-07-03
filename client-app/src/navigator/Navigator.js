@@ -44,7 +44,6 @@ function NewsStackedScreen() {
 
 function HomeTabs() {
     const isDesktop = useMediaQuery("(min-width: 960px)");
-    console.log(isDesktop);
     return (
         <Tab.Navigator
             initialRouteName="Homepage"
@@ -138,7 +137,6 @@ function HomeTabs() {
 
 export default function Navigator() {
     const { isLoggedIn } = useSelector((state) => state.user);
-    console.log(isLoggedIn);
 
     return (
         <>

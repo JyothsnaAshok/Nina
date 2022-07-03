@@ -9,12 +9,50 @@ import {
     Button,
     Flex,
     HStack,
+    Avatar,
 } from "native-base";
 import one from "../../../assets/1.jpg";
 
 export function Screen1({ navigation }) {
     return (
         <>
+            <Box
+                pt="5"
+                bgColor={"#ffffff"}
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                mt={isDesktop ? "10" : 0}
+            >
+                <Flex
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    w={"90%"}
+                >
+                    <VStack mb={6}>
+                        <Text
+                            fontSize={"3xl"}
+                            width={"100%"}
+                            color="#6E34B8"
+                            mt={10}
+                        >
+                            News
+                        </Text>
+                        <Text width={"100%"} color="#828282" fontSize={"md"}>
+                            Read the latest news
+                        </Text>
+                    </VStack>
+                    <Avatar
+                        bg="green.500"
+                        source={{
+                            uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+                        }}
+                    >
+                        AJ
+                    </Avatar>
+                </Flex>
+            </Box>
             <Flex
                 bgColor={"#ffffff"}
                 p={5}
@@ -78,6 +116,43 @@ export function Screen1({ navigation }) {
 export function Screen2({ navigation }) {
     return (
         <>
+            <Box
+                pt="5"
+                bgColor={"#ffffff"}
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                mt={isDesktop ? "10" : 0}
+            >
+                <Flex
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    w={"90%"}
+                >
+                    <VStack mb={6}>
+                        <Text
+                            fontSize={"3xl"}
+                            width={"100%"}
+                            color="#6E34B8"
+                            mt={10}
+                        >
+                            News
+                        </Text>
+                        <Text width={"100%"} color="#828282" fontSize={"md"}>
+                            Read the latest news
+                        </Text>
+                    </VStack>
+                    <Avatar
+                        bg="green.500"
+                        source={{
+                            uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+                        }}
+                    >
+                        AJ
+                    </Avatar>
+                </Flex>
+            </Box>
             <Flex
                 bgColor={"#ffffff"}
                 p={5}
@@ -140,6 +215,43 @@ export function Screen2({ navigation }) {
 export function Screen3({ navigation }) {
     return (
         <>
+            <Box
+                pt="5"
+                bgColor={"#ffffff"}
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                mt={isDesktop ? "10" : 0}
+            >
+                <Flex
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    w={"90%"}
+                >
+                    <VStack mb={6}>
+                        <Text
+                            fontSize={"3xl"}
+                            width={"100%"}
+                            color="#6E34B8"
+                            mt={10}
+                        >
+                            News
+                        </Text>
+                        <Text width={"100%"} color="#828282" fontSize={"md"}>
+                            Read the latest news
+                        </Text>
+                    </VStack>
+                    <Avatar
+                        bg="green.500"
+                        source={{
+                            uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+                        }}
+                    >
+                        AJ
+                    </Avatar>
+                </Flex>
+            </Box>
             <Flex
                 bgColor={"#ffffff"}
                 p={5}

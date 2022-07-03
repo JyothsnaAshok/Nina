@@ -8,12 +8,9 @@ import {
     Text,
     Heading,
     Box,
-    Link,
     VStack,
-    AspectRatio,
     TextArea,
     Avatar,
-    Input,
     Icon,
     FormControl,
     useToast,
@@ -51,7 +48,6 @@ export default function Home({ navigation }) {
 
     const finishMutation = useMutation(SendPost, {
         onSuccess: (data) => {
-            console.log(data);
             toast.show({
                 description: "Post sent successfully",
             });
@@ -62,14 +58,12 @@ export default function Home({ navigation }) {
     });
 
     const onFinish = async () => {
-        console.log(formData);
         await finishMutation.mutateAsync(formData);
         closePanel();
         QueryClient.invalidateQueries("posts");
     };
 
     const { data: posts, isPostLoading } = useQuery("posts", GetPosts);
-    console.log(posts, "posts");
 
     if (isPostLoading) {
         return (
@@ -80,11 +74,9 @@ export default function Home({ navigation }) {
     }
 
     const { data: trends } = useQuery("trends", GetTrendPosts);
-    console.log(trends, "trends");
 
     const followMutation = useMutation(UpdateFollow, {
         onSuccess: (data) => {
-            console.log(data);
             toast.show({
                 description: "Followed",
             });
@@ -97,7 +89,6 @@ export default function Home({ navigation }) {
 
     const unfollowMutation = useMutation(UpdateUnfollow, {
         onSuccess: (data) => {
-            console.log(data);
             toast.show({
                 description: "Unfollowed",
             });
@@ -110,7 +101,6 @@ export default function Home({ navigation }) {
 
     const likeMutation = useMutation(LikePost, {
         onSuccess: (data) => {
-            console.log(data);
             toast.show({
                 description: "Liked",
             });
@@ -123,7 +113,6 @@ export default function Home({ navigation }) {
 
     const unlikeMutation = useMutation(UnlikePost, {
         onSuccess: (data) => {
-            console.log(data);
             toast.show({
                 description: "Unliked",
             });
@@ -135,11 +124,9 @@ export default function Home({ navigation }) {
     });
 
     const onLike = async (id) => {
-        console.log(id, "abjdhaiuhdiuagdhkjagdbajhkdb");
         await likeMutation.mutateAsync(id);
     };
     const onUnlike = async (id) => {
-        console.log(id, "abjdhaiuhdiuagdhkjagdbajhkdb");
         await unlikeMutation.mutateAsync(id);
     };
     const onFollow = async (id) => {
@@ -171,62 +158,101 @@ export default function Home({ navigation }) {
             {isDesktop ? (
                 <>
                     {/* <Navbar /> */}
-                    <HStack p={10} mt={isDesktop ? "10" : 0}>
-                        <VStack m={5} w={"25rem"}>
-                            <Box
-                                // maxW="80"
-                                // width="30%"
-                                rounded="lg"
-                                // overflow="hidden"
-                                borderColor="coolGray.200"
-                                borderWidth="1"
-                                padding={4}
-                                height={"100%"}
-                            >
+                    <Box
+                        pt="5"
+                        bgColor={"#ffffff"}
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        mt={isDesktop ? "10" : 0}
+                    >
+                        <Flex
+                            direction="row"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            w={"90%"}
+                        >
+                            <VStack mb={6}>
                                 <Text
-                                    color="coolGray.500"
-                                    textDecoration={"underline 2px solid"}
-                                    textDecorationColor="coolGray.500"
-                                    py={6}
+                                    fontSize={"3xl"}
+                                    width={"100%"}
+                                    color="#6E34B8"
+                                    mt={10}
                                 >
-                                    Trending Posts
-                                    <Icon
-                                        m="5"
-                                        size="8"
-                                        color="coolGray.500"
-                                        as={
-                                            <AiOutlineFire
-                                                style={{ marginLeft: "0.5rem" }}
-                                            />
-                                        }
-                                    />
+                                    Your Feed
                                 </Text>
-                                {trends?.map((item, index) => (
-                                    <HStack
-                                        display={"flex"}
-                                        justifyContent="space-between"
-                                        alignItems={"center"}
-                                        key={index}
-                                        // borderBottomWidth={1}
-                                        // borderBottomColor="coolGray.200"
+                                <Text
+                                    width={"100%"}
+                                    color="#828282"
+                                    fontSize={"md"}
+                                >
+                                    Get access to our community
+                                </Text>
+                            </VStack>
+                            <Avatar
+                                bg="green.500"
+                                source={{
+                                    uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+                                }}
+                            >
+                                AJ
+                            </Avatar>
+                        </Flex>
+                    </Box>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <HStack p={10}>
+                            <VStack m={5} w={"25rem"}>
+                                <Box
+                                    rounded="lg"
+                                    borderColor="coolGray.200"
+                                    borderWidth="1"
+                                    padding={4}
+                                    height={"100%"}
+                                >
+                                    <Text
+                                        color="coolGray.500"
+                                        textDecoration={"underline 2px solid"}
+                                        textDecorationColor="coolGray.500"
+                                        py={6}
                                     >
-                                        <VStack pr={10} pb={5}>
-                                            <Text color="black" bold>
-                                                {item?.text.slice(0, 40)}
-                                                {"...."}
-                                            </Text>
-                                            <Text color="coolGray.500">
-                                                by {item?.user.name}
-                                            </Text>
-                                        </VStack>
-                                        <VStack>
-                                            <BsSuitHeartFill />
-                                        </VStack>
-                                    </HStack>
-                                ))}
-                            </Box>
-                        </VStack>
-                        <ScrollView showsVerticalScrollIndicator={false}>
+                                        Trending Posts
+                                        <Icon
+                                            m="5"
+                                            size="8"
+                                            color="coolGray.500"
+                                            as={
+                                                <AiOutlineFire
+                                                    style={{
+                                                        marginLeft: "0.5rem",
+                                                    }}
+                                                />
+                                            }
+                                        />
+                                    </Text>
+                                    {trends?.map((item, index) => (
+                                        <HStack
+                                            display={"flex"}
+                                            justifyContent="space-between"
+                                            alignItems={"center"}
+                                            key={index}
+                                        >
+                                            <VStack pr={10} pb={5}>
+                                                <Text color="black" bold>
+                                                    {item?.text.slice(0, 40)}
+                                                    {"...."}
+                                                </Text>
+                                                <Text color="coolGray.500">
+                                                    by {item?.user.name}
+                                                </Text>
+                                            </VStack>
+                                            <VStack>
+                                                <BsSuitHeartFill />
+                                            </VStack>
+                                        </HStack>
+                                    ))}
+                                </Box>
+                            </VStack>
+
                             <VStack m={5} w={"50rem"}>
                                 <Box
                                     rounded="lg"
@@ -259,21 +285,6 @@ export default function Home({ navigation }) {
                                         </FormControl>
                                     </HStack>
                                     <HStack alignItems={"center"} ml={12}>
-                                        {/* <Button
-                                    variant={"outline"}
-                                    borderRadius="6"
-                                    w={"8rem"}
-                                    mx={5}
-                                > */}
-                                        {/* <input type="file">
-                                    <Text color="#1d1d1d">
-                                    Upload
-                                    </Text>
-                                </input> */}
-                                        {/* <input type="file" id="leftbutton">
-                                    Upload Image
-                                </input> */}
-                                        {/* </Button> */}
                                         <Button
                                             // rounded="3xl"
                                             borderRadius="6"
@@ -435,37 +446,8 @@ export default function Home({ navigation }) {
                                     ))}
                                 </Box>
                             </VStack>
-                        </ScrollView>
-                        {/* <VStack m={5} w={"25rem"}>
-                        <Box
-                            borderColor="coolGray.200"
-                            borderWidth="1"
-                            padding={4}
-                            rounded="lg"
-                            height={"100%"}
-                        >
-                            <VStack w="100%" space={5} alignSelf="center">
-                                <Text>Search</Text>
-                                <Input
-                                    placeholder="Search Portfolios"
-                                    borderRadius="6"
-                                    InputLeftElement={
-                                        <Icon
-                                            m="5"
-                                            size="6"
-                                            color="gray.400"
-                                            as={
-                                                <BiSearch
-                                                    style={{ marginLeft: "1rem" }}
-                                                />
-                                            }
-                                        />
-                                    }
-                                />
-                            </VStack>
-                        </Box>
-                    </VStack> */}
-                    </HStack>
+                        </HStack>
+                    </ScrollView>
                 </>
             ) : (
                 <>

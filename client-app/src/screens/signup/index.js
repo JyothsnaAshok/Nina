@@ -31,27 +31,17 @@ export default function Signup({ navigation }) {
 
     const finishMutation = useMutation(SignUp, {
         onSuccess: (data) => {
-            console.log(data);
             toast.show({
                 description: "Registered in successfully",
             });
             navigation.navigate("Login");
         },
         onError: (e) => {
-            console.log("reached");
             console.log(e);
-            // message.error("Registration Failed");
-            // message.error(e.response.data.message);
         },
     });
 
     const onFinish = async () => {
-        console.log(formData);
-        // const data = {
-        //     name: values.name,
-        //     email: values.email,
-        //     password: values.password,
-        // };
         await finishMutation.mutateAsync(formData);
     };
 

@@ -14,21 +14,17 @@ import {
 } from "native-base";
 import logo from "../../../assets/logo.png";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { ScrollView } from "react-native";
 import { UserData } from "../../services/auth.service";
-import { GetAllStocks, SendStock } from "../../services/stocks.service";
 
 export default function Home({ navigation }) {
     const queryClient = useQueryClient();
 
-    // const [showModal, setShowModal] = useState(false);
-
     const { data: user } = useQuery("user", UserData);
-    console.log(user, "user");
 
     const { data: portfolio } = useQuery("portfolio", GetSelfPortfolio);
-    console.log(portfolio, "portfolio");
+
     return (
         <>
             <ScrollView showsVerticalScrollIndicator={false}>

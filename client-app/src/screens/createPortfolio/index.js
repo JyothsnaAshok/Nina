@@ -2,7 +2,6 @@ import {
     Avatar,
     Button,
     Center,
-    Container,
     FormControl,
     HStack,
     Icon,
@@ -18,7 +17,6 @@ import {
 import React, { useState } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import Navbar from "../../components/Navbar";
 import {
     EditPortfolio,
     GetSelfPortfolio,
@@ -34,32 +32,23 @@ export default function createPortfolio() {
 
     const queryClient = useQueryClient();
 
-    // const [showModal, setShowModal] = useState(false);
-
     const { data: stocks } = useQuery("stocks", GetAllStocks);
-    console.log(stocks, "stocks");
 
     const { data: portfolio } = useQuery("portfolio", GetSelfPortfolio);
-    console.log(portfolio, "portfolio");
 
     const stockMutation = useMutation(SendStock, {
         onSuccess: (data) => {
-            console.log(data);
             toast.show({
                 description: "Stock added to portfolio",
             });
             queryClient.invalidateQueries("portfolio");
         },
         onError: (e) => {
-            // toast.show({
-            //     description: e.response.data.errors[0].message,
-            // });
             console.log(e);
         },
     });
 
     const addStock = async () => {
-        console.log(formData);
         await stockMutation.mutateAsync(formData);
     };
 
@@ -71,9 +60,6 @@ export default function createPortfolio() {
             queryClient.invalidateQueries("portfolio");
         },
         onError: (e) => {
-            // toast.show({
-            //     description: e.response.data.errors[0].message,
-            // });
             console.log(e);
         },
     });
@@ -84,7 +70,6 @@ export default function createPortfolio() {
 
     return (
         <>
-            {/* <Navbar /> */}
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Box
                     pt={20}
@@ -105,7 +90,6 @@ export default function createPortfolio() {
                     <VStack
                         borderColor="coolGray.300"
                         borderWidth="1"
-                        // width={"100%"}
                         display={"flex"}
                         py={4}
                         px={4}
