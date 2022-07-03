@@ -31,6 +31,8 @@ import {
     SendPost,
     UpdateFollow,
     UpdateUnfollow,
+    LikePost,
+    UnlikePost,
 } from "../../services/feed.service";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import Navbar from "../../components/Navbar";
@@ -102,6 +104,40 @@ export default function Home({ navigation }) {
         },
     });
 
+    const likeMutation = useMutation(LikePost, {
+        onSuccess: (data) => {
+            console.log(data);
+            toast.show({
+                description: "Liked",
+            });
+            QueryClient.invalidateQueries("posts");
+        },
+        onError: (e) => {
+            console.log(e);
+        },
+    });
+
+    const unlikeMutation = useMutation(UnlikePost, {
+        onSuccess: (data) => {
+            console.log(data);
+            toast.show({
+                description: "Unliked",
+            });
+            QueryClient.invalidateQueries("posts");
+        },
+        onError: (e) => {
+            console.log(e);
+        },
+    });
+
+    const onLike = async (id) => {
+        console.log(id, "abjdhaiuhdiuagdhkjagdbajhkdb");
+        await likeMutation.mutateAsync(id);
+    };
+    const onUnlike = async (id) => {
+        console.log(id, "abjdhaiuhdiuagdhkjagdbajhkdb");
+        await unlikeMutation.mutateAsync(id);
+    };
     const onFollow = async (id) => {
         await followMutation.mutateAsync(id);
     };
@@ -609,27 +645,41 @@ export default function Home({ navigation }) {
                                                 mt="4"
                                             >
                                                 {post.likedByUser ? (
-                                                    <Icon
-                                                        as={
-                                                            <AntDesign
-                                                                name="hearto"
-                                                                size={20}
-                                                            />
-                                                        }
-                                                        color="#6E34B8"
-                                                        size={"lg"}
-                                                    />
+                                                    <Button
+                                                        variant="unstyled"
+                                                        onPress={() => {
+                                                            onUnlike(post._id);
+                                                        }}
+                                                    >
+                                                        <Icon
+                                                            as={
+                                                                <AntDesign
+                                                                    name="heart"
+                                                                    size={20}
+                                                                />
+                                                            }
+                                                            color="#6E34B8"
+                                                            size={"lg"}
+                                                        />
+                                                    </Button>
                                                 ) : (
-                                                    <Icon
-                                                        as={
-                                                            <AntDesign
-                                                                name="hearto"
-                                                                size={20}
-                                                            />
-                                                        }
-                                                        color="#6E34B8"
-                                                        size={"lg"}
-                                                    />
+                                                    <Button
+                                                        variant="unstyled"
+                                                        onPress={() => {
+                                                            onLike(post._id);
+                                                        }}
+                                                    >
+                                                        <Icon
+                                                            as={
+                                                                <AntDesign
+                                                                    name="hearto"
+                                                                    size={20}
+                                                                />
+                                                            }
+                                                            color="#6E34B8"
+                                                            size={"lg"}
+                                                        />
+                                                    </Button>
                                                 )}
                                                 <Text fontSize={"md"} ml="3">
                                                     {post.likedBy.length}
