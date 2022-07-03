@@ -113,14 +113,20 @@ export default function Explore({ navigation }) {
                                 Look at Trending Portfolios
                             </Text>
                         </VStack>
-                        <Avatar
-                            bg="green.500"
-                            source={{
-                                uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-                            }}
+                        <Button
+                            variant="unstyled"
+                            onPress={() => navigation.navigate("SelfProfile")}
+                            p={0}
                         >
-                            AJ
-                        </Avatar>
+                            <Avatar
+                                bg="green.500"
+                                source={{
+                                    uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+                                }}
+                            >
+                                AJ
+                            </Avatar>
+                        </Button>
                     </Flex>
                 </Box>
                 <HStack alignItems={"center"} mt="4">
