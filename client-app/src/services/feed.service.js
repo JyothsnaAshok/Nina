@@ -1,4 +1,4 @@
-import { BACKEND_URL } from "../constants";
+import { BACKEND_URL } from "../../constants";
 import axios from "axios";
 
 export const SendPost = async (body) => {
@@ -21,6 +21,7 @@ export const SendPost = async (body) => {
 
 export const GetPosts = async () => {
     try {
+        console.log(BACKEND_URL, "buuuuuuu");
         let { user } = JSON.parse(localStorage.getItem("persist:root"));
         user = JSON.parse(user);
         const token = user.user.token;

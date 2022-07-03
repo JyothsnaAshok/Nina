@@ -131,7 +131,7 @@ function HomeTabs() {
 }
 
 export default function Navigator() {
-    const isLoggedIn = true;
+    const isLoggedIn = false;
     return (
         <>
             {isLoggedIn ? (
