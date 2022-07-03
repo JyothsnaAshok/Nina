@@ -32,8 +32,9 @@ import {
     UpdateFollow,
     UpdateUnfollow,
 } from "../../services/feed.service";
+import DocumentPicker from "react-native-document-picker";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import Navbar from "../../components/Navbar";
+// import Navbar from "../../components/Navbar";
 import { BsSuitHeartFill, BsChatLeftQuote } from "react-icons/bs";
 import { BiImageAdd, BiSearch } from "react-icons/bi";
 import { AiOutlineFire, AiOutlinePlus } from "react-icons/ai";
@@ -41,6 +42,7 @@ import { AiOutlineFire, AiOutlinePlus } from "react-icons/ai";
 export default function Home({ navigation }) {
     //API calls for the web version of our home page
     const [formData, setData] = React.useState({});
+    const [singleFile, setSingleFile] = useState(null);
     const [follow, setFollow] = React.useState({});
     const toast = useToast();
     const QueryClient = useQueryClient();
@@ -60,6 +62,8 @@ export default function Home({ navigation }) {
     const onFinish = async () => {
         console.log(formData);
         await finishMutation.mutateAsync(formData);
+        closePanel();
+        QueryClient.invalidateQueries("posts");
     };
 
     const { data: posts, isPostLoading } = useQuery("posts", GetPosts);
@@ -130,8 +134,8 @@ export default function Home({ navigation }) {
         <>
             {isDesktop ? (
                 <>
-                    <Navbar />
-                    <HStack p={10}>
+                    {/* <Navbar /> */}
+                    <HStack p={10} mt={isDesktop ? "10" : 0}>
                         <VStack m={5} w={"25rem"}>
                             <Box
                                 // maxW="80"
@@ -658,9 +662,15 @@ export default function Home({ navigation }) {
                             Share your thoughts here
                         </Text>
                         <Box alignItems="center" w="100%" mt={10} px="10">
-                            <TextArea h={40} placeholder="Post" />
+                            <TextArea
+                                h={40}
+                                placeholder="Post"
+                                onChangeText={(value) =>
+                                    setData({ ...formData, text: value })
+                                }
+                            />
                             <HStack mt="5">
-                                <Button
+                                {/* <Button
                                     bgColor={"#ffffff"}
                                     _text={{
                                         color: "#6E34B8",
@@ -670,7 +680,14 @@ export default function Home({ navigation }) {
                                     w="45%"
                                     mx="4"
                                     py="4"
-                                    onPress={() => closePanel()}
+                                    onPress={() => {
+                                        DocumentPicker.pick({
+                                            allowMultiSelection: true,
+                                            type: [types.doc, types.docx],
+                                        })
+                                            .then(setResult)
+                                            .catch(handleError);
+                                    }}
                                 >
                                     <HStack alignItems={"center"}>
                                         <Icon
@@ -679,14 +696,14 @@ export default function Home({ navigation }) {
                                         />
                                         <Text>Image</Text>
                                     </HStack>
-                                </Button>
+                                </Button> */}
                                 <Button
                                     bgColor={"#6E34B8"}
                                     borderRadius={10}
                                     w="45%"
                                     py="3"
                                     mx="4"
-                                    onPress={() => closePanel()}
+                                    onPress={onFinish}
                                 >
                                     Post
                                 </Button>

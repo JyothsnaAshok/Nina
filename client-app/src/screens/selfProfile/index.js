@@ -10,6 +10,7 @@ import {
     Heading,
     Divider,
     Fab,
+    Link,
 } from "native-base";
 import logo from "../../../assets/logo.png";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
@@ -29,8 +30,8 @@ export default function Home({ navigation }) {
     // const { data: stocks } = useQuery("stocks", GetAllStocks);
     // console.log(stocks, "stocks");
 
-    // const { data: portfolio } = useQuery("portfolio", GetSelfPortfolio);
-    // console.log(portfolio, "portfolio");
+    const { data: portfolio } = useQuery("portfolio", GetSelfPortfolio);
+    console.log(portfolio, "portfolio");
     return (
         <>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -42,14 +43,13 @@ export default function Home({ navigation }) {
                             color="#6E34B8"
                             onPress={() => navigation.goBack()}
                         />
-                        <Text color="#6e34b8" fontSize={"xl"} ml="4">
+                        <Text color="#6e34b8" fontSize={"xl"} ml="4" mr="65%">
                             My Profile
                         </Text>
                         <Icon
                             as={<AntDesign name="setting" />}
                             size={"xl"}
                             color="#6E34B8"
-                            ml="40"
                             onPress={() => navigation.navigate("Settings")}
                         />
                     </HStack>
@@ -195,6 +195,32 @@ export default function Home({ navigation }) {
                             }
                         />
                     </Box>
+                </VStack>
+                <VStack mt="10">
+                    <Heading fontSize="xl" mb="2" textAlign={"center"}>
+                        My Portfolios
+                    </Heading>
+                    <Box width={"90%"} p="4" _text={{ fontSize: 40 }}>
+                        <Heading>Demo</Heading>
+                        <Text>Description</Text>
+                        <Link>View More</Link>
+                    </Box>
+                    {portfolio ? (
+                        <Box>
+                            <Heading>Demo</Heading>
+                            <Text>Description</Text>
+                            <Link>View More</Link>
+                        </Box>
+                    ) : (
+                        <Text
+                            textAlign={"center"}
+                            fontSize={20}
+                            fontWeight={300}
+                            mt="10"
+                        >
+                            Uh Oh! We Couldnt find any Portfolios :/
+                        </Text>
+                    )}
                 </VStack>
             </ScrollView>
         </>
