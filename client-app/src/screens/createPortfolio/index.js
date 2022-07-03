@@ -21,6 +21,7 @@ import {
     EditPortfolio,
     GetSelfPortfolio,
 } from "../../services/portfolio.service";
+import { SendPost } from "../../services/feed.service";
 import { GetAllStocks, SendStock } from "../../services/stocks.service";
 
 export default function createPortfolio() {
@@ -36,11 +37,28 @@ export default function createPortfolio() {
 
     const { data: portfolio } = useQuery("portfolio", GetSelfPortfolio);
 
+    const finishMutation = useMutation(SendPost, {
+        onSuccess: (data) => {
+            toast.show({
+                description: "Post sent successfully",
+            });
+        },
+        onError: (e) => {
+            console.log(e);
+        },
+    });
+
+    const onFinish = async () => {
+        const text = `Hey Guys! I just bought ${formData.quantity} shares of ${formData.ticker} for ${formData.buyPrice}`;
+        await finishMutation.mutateAsync({ text: text });
+    };
+
     const stockMutation = useMutation(SendStock, {
         onSuccess: (data) => {
             toast.show({
                 description: "Stock added to portfolio",
             });
+            onFinish();
             queryClient.invalidateQueries("portfolio");
         },
         onError: (e) => {
