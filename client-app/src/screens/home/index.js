@@ -3,11 +3,6 @@ import {
     Flex,
     Button,
     Center,
-    useColorMode,
-    Tooltip,
-    IconButton,
-    SunIcon,
-    MoonIcon,
     Image,
     HStack,
     Text,
@@ -22,8 +17,10 @@ import {
     Icon,
     FormControl,
     useToast,
+    Skeleton,
 } from "native-base";
 import logo from "../../../assets/logo.png";
+import moment from "moment";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { SwipeablePanel } from "rn-swipeable-panel";
 import { StyleSheet, ScrollView, Platform } from "react-native";
@@ -35,7 +32,7 @@ import {
     UpdateFollow,
     UpdateUnfollow,
 } from "../../services/feed.service";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import Navbar from "../../components/Navbar";
 import { BsSuitHeartFill, BsChatLeftQuote } from "react-icons/bs";
 import { BiImageAdd, BiSearch } from "react-icons/bi";
@@ -46,6 +43,7 @@ export default function Home({ navigation }) {
     const [formData, setData] = React.useState({});
     const [follow, setFollow] = React.useState({});
     const toast = useToast();
+    const QueryClient = useQueryClient();
 
     const finishMutation = useMutation(SendPost, {
         onSuccess: (data) => {
@@ -64,8 +62,16 @@ export default function Home({ navigation }) {
         await finishMutation.mutateAsync(formData);
     };
 
-    const { data: posts } = useQuery("posts", GetPosts);
+    const { data: posts, isPostLoading } = useQuery("posts", GetPosts);
     console.log(posts, "posts");
+
+    if (isPostLoading) {
+        return (
+            <Center>
+                <Skeleton />
+            </Center>
+        );
+    }
 
     const { data: trends } = useQuery("trends", GetTrendPosts);
     console.log(trends, "trends");
@@ -76,6 +82,7 @@ export default function Home({ navigation }) {
             toast.show({
                 description: "Followed",
             });
+            QueryClient.invalidateQueries("posts");
         },
         onError: (e) => {
             console.log(e);
@@ -88,6 +95,7 @@ export default function Home({ navigation }) {
             toast.show({
                 description: "Unfollowed",
             });
+            QueryClient.invalidateQueries("posts");
         },
         onError: (e) => {
             console.log(e);
@@ -178,206 +186,216 @@ export default function Home({ navigation }) {
                                 ))}
                             </Box>
                         </VStack>
-                        <VStack m={5} w={"50rem"}>
-                            <Box
-                                rounded="lg"
-                                borderColor="coolGray.200"
-                                borderWidth="1"
-                                p={12}
-                            >
-                                <HStack justifyContent={"space-between"}>
-                                    <Avatar
-                                        bg="indigo.500"
-                                        source={{
-                                            uri: "https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-                                        }}
-                                    >
-                                        JB
-                                    </Avatar>
-                                    <FormControl ml={5}>
-                                        <TextArea
-                                            variant={"filled"}
-                                            w={"40rem"}
-                                            borderRadius="6"
-                                            placeholder="What's on your mind today?"
-                                            onChangeText={(value) =>
-                                                setData({
-                                                    ...formData,
-                                                    text: value,
-                                                })
-                                            }
-                                        />
-                                    </FormControl>
-                                </HStack>
-                                <HStack alignItems={"center"} ml={12}>
-                                    {/* <Button
+                        <ScrollView showsVerticalScrollIndicator={false}>
+                            <VStack m={5} w={"50rem"}>
+                                <Box
+                                    rounded="lg"
+                                    borderColor="coolGray.200"
+                                    borderWidth="1"
+                                    p={12}
+                                >
+                                    <HStack justifyContent={"space-between"}>
+                                        <Avatar
+                                            bg="indigo.500"
+                                            source={{
+                                                uri: "https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+                                            }}
+                                        >
+                                            JB
+                                        </Avatar>
+                                        <FormControl ml={5}>
+                                            <TextArea
+                                                variant={"filled"}
+                                                w={"40rem"}
+                                                borderRadius="6"
+                                                placeholder="What's on your mind today?"
+                                                onChangeText={(value) =>
+                                                    setData({
+                                                        ...formData,
+                                                        text: value,
+                                                    })
+                                                }
+                                            />
+                                        </FormControl>
+                                    </HStack>
+                                    <HStack alignItems={"center"} ml={12}>
+                                        {/* <Button
                                     variant={"outline"}
                                     borderRadius="6"
                                     w={"8rem"}
                                     mx={5}
                                 > */}
-                                    {/* <input type="file">
+                                        {/* <input type="file">
                                     <Text color="#1d1d1d">
                                     Upload
                                     </Text>
                                 </input> */}
-                                    {/* <input type="file" id="leftbutton">
+                                        {/* <input type="file" id="leftbutton">
                                     Upload Image
                                 </input> */}
-                                    {/* </Button> */}
-                                    <Button
-                                        // rounded="3xl"
-                                        borderRadius="6"
-                                        bg={"#6E34B8"}
-                                        w={"8rem"}
-                                        my={5}
-                                        // ml={"4rem"}
-                                        onPress={onFinish}
-                                    >
-                                        Post
-                                    </Button>
-                                </HStack>
-                            </Box>
-                            <Box
-                                // maxW="80"
-                                // width="30%"
-                                rounded="lg"
-                                // overflow="hidden"
-                                borderColor="coolGray.200"
-                                borderWidth="1"
-                                padding={4}
-                                my={10}
-                                height={"100%"}
-                            >
-                                <Text
-                                    color="coolGray.500"
-                                    textDecoration={"underline 2px solid"}
-                                    textDecorationColor="coolGray.500"
-                                    py={6}
+                                        {/* </Button> */}
+                                        <Button
+                                            // rounded="3xl"
+                                            borderRadius="6"
+                                            bg={"#6E34B8"}
+                                            w={"8rem"}
+                                            my={5}
+                                            // ml={"4rem"}
+                                            onPress={onFinish}
+                                        >
+                                            Post
+                                        </Button>
+                                    </HStack>
+                                </Box>
+
+                                <Box
+                                    // maxW="80"
+                                    // width="30%"
+                                    rounded="lg"
+                                    // overflow="hidden"
+                                    borderColor="coolGray.200"
+                                    borderWidth="1"
+                                    padding={4}
+                                    my={10}
+                                    height={"100%"}
                                 >
-                                    Feed
-                                    <Icon
-                                        m="5"
-                                        size="8"
+                                    <Text
                                         color="coolGray.500"
-                                        as={
-                                            <BsChatLeftQuote
-                                                style={{ marginLeft: "0.5rem" }}
-                                            />
-                                        }
-                                    />
-                                </Text>
-                                {posts?.map((item, index) => (
-                                    <VStack
-                                        key={index}
-                                        paddingBottom={5}
-                                        borderBottomWidth={1}
-                                        borderBottomColor="coolGray.200"
+                                        textDecoration={"underline 2px solid"}
+                                        textDecorationColor="coolGray.500"
+                                        py={6}
                                     >
-                                        <HStack
-                                            display={"flex"}
-                                            justifyContent="space-between"
-                                            alignItems={"center"}
+                                        Feed
+                                        <Icon
+                                            m="5"
+                                            size="8"
+                                            color="coolGray.500"
+                                            as={
+                                                <BsChatLeftQuote
+                                                    style={{
+                                                        marginLeft: "0.5rem",
+                                                    }}
+                                                />
+                                            }
+                                        />
+                                    </Text>
+                                    {posts?.map((item, index) => (
+                                        <VStack
+                                            key={index}
+                                            paddingBottom={5}
+                                            borderBottomWidth={1}
+                                            borderBottomColor="coolGray.200"
                                         >
                                             <HStack
                                                 display={"flex"}
                                                 justifyContent="space-between"
                                                 alignItems={"center"}
                                             >
-                                                <Avatar
-                                                    my={"1rem"}
-                                                    bg="indigo.500"
-                                                    source={{
-                                                        uri: "https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-                                                    }}
-                                                    size="sm"
+                                                <HStack
+                                                    display={"flex"}
+                                                    justifyContent="space-between"
+                                                    alignItems={"center"}
                                                 >
-                                                    JB
-                                                </Avatar>
-                                                <Text bold px={4}>
-                                                    {posts[index]?.user.name}
-                                                </Text>
-                                            </HStack>
-
-                                            <HStack>
-                                                <Button
-                                                    onPress={
-                                                        // () =>
-                                                        // onFollow(posts[index]?.user._id)
-                                                        posts[index]
-                                                            ?.followedByUser
-                                                            ? () => {
-                                                                  onUnfollow(
-                                                                      posts[
-                                                                          index
-                                                                      ]?.user
-                                                                          ._id
-                                                                  );
-                                                                  setFollow(
-                                                                      false
-                                                                  );
-                                                              }
-                                                            : () => {
-                                                                  onFollow(
-                                                                      posts[
-                                                                          index
-                                                                      ]?.user
-                                                                          ._id
-                                                                  );
-                                                                  setFollow(
-                                                                      true
-                                                                  );
-                                                              }
-                                                    }
-                                                    variant={"outline"}
-                                                    borderRadius="6"
-                                                    py={1}
-                                                    width={"8rem"}
-                                                    rightIcon={
-                                                        <Icon
-                                                            size="5"
-                                                            color="coolGray.500"
-                                                            as={
-                                                                <AiOutlinePlus
-                                                                    style={{
-                                                                        marginLeft:
-                                                                            "0.5rem",
-                                                                        fontSize:
-                                                                            "1rem",
-                                                                        color: "#1d1d1d",
-                                                                    }}
-                                                                />
-                                                            }
-                                                        />
-                                                    }
-                                                >
-                                                    <Text color="#1d1d1d">
-                                                        {posts[index]
-                                                            ?.followedByUser
-                                                            ? "Unfollow"
-                                                            : "Follow"}
-                                                        {/* {follow ? "Unfollow" : "Follow"} */}
+                                                    <Avatar
+                                                        my={"1rem"}
+                                                        bg="indigo.500"
+                                                        source={{
+                                                            uri: "https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+                                                        }}
+                                                        size="sm"
+                                                    >
+                                                        JB
+                                                    </Avatar>
+                                                    <Text bold px={4}>
+                                                        {
+                                                            posts[index]?.user
+                                                                .name
+                                                        }
                                                     </Text>
-                                                </Button>
+                                                </HStack>
+
+                                                <HStack>
+                                                    <Button
+                                                        onPress={
+                                                            // () =>
+                                                            // onFollow(posts[index]?.user._id)
+                                                            posts[index]
+                                                                ?.followedByUser
+                                                                ? () => {
+                                                                      onUnfollow(
+                                                                          posts[
+                                                                              index
+                                                                          ]
+                                                                              ?.user
+                                                                              ._id
+                                                                      );
+                                                                      setFollow(
+                                                                          false
+                                                                      );
+                                                                  }
+                                                                : () => {
+                                                                      onFollow(
+                                                                          posts[
+                                                                              index
+                                                                          ]
+                                                                              ?.user
+                                                                              ._id
+                                                                      );
+                                                                      setFollow(
+                                                                          true
+                                                                      );
+                                                                  }
+                                                        }
+                                                        variant={"outline"}
+                                                        borderRadius="6"
+                                                        py={1}
+                                                        width={"8rem"}
+                                                        rightIcon={
+                                                            <Icon
+                                                                size="5"
+                                                                color="coolGray.500"
+                                                                as={
+                                                                    <AiOutlinePlus
+                                                                        style={{
+                                                                            marginLeft:
+                                                                                "0.5rem",
+                                                                            fontSize:
+                                                                                "1rem",
+                                                                            color: "#1d1d1d",
+                                                                        }}
+                                                                    />
+                                                                }
+                                                            />
+                                                        }
+                                                    >
+                                                        <Text color="#1d1d1d">
+                                                            {posts[index]
+                                                                ?.followedByUser
+                                                                ? "Unfollow"
+                                                                : "Follow"}
+                                                            {/* {follow ? "Unfollow" : "Follow"} */}
+                                                        </Text>
+                                                    </Button>
+                                                </HStack>
                                             </HStack>
-                                        </HStack>
-                                        <Text px={"10"} py={"2"}>
-                                            {posts[index]?.text}
-                                        </Text>
-                                        <Center py="5">
-                                            <Image
-                                                width={"38rem"}
-                                                height={"10rem"}
-                                                source={{
-                                                    uri: "https://wallpaperaccess.com/full/317501.jpg",
-                                                }}
-                                                borderRadius="6"
-                                            />
-                                        </Center>
-                                    </VStack>
-                                ))}
-                            </Box>
-                        </VStack>
+                                            <Text px={"10"} py={"2"}>
+                                                {posts[index]?.text}
+                                            </Text>
+                                            <Center py="5">
+                                                <Image
+                                                    width={"38rem"}
+                                                    height={"10rem"}
+                                                    source={{
+                                                        uri: "https://wallpaperaccess.com/full/317501.jpg",
+                                                    }}
+                                                    borderRadius="6"
+                                                />
+                                            </Center>
+                                        </VStack>
+                                    ))}
+                                </Box>
+                            </VStack>
+                        </ScrollView>
                         {/* <VStack m={5} w={"25rem"}>
                         <Box
                             borderColor="coolGray.200"
@@ -473,85 +491,165 @@ export default function Home({ navigation }) {
                                 </HStack>
                             </Box>
                             <Heading mt="7">Latest Posts</Heading>
-                            <Box
-                                bgColor={"#fff"}
-                                mt="4"
-                                p="4"
-                                shadow={6}
-                                borderRadius="10"
-                                shadowRadius={12}
-                            >
-                                <HStack alignItems={"center"}>
-                                    <Button
-                                        size={50}
-                                        variant="ghost"
-                                        onPress={() =>
-                                            navigation.navigate("Profile")
-                                        }
+                            {posts?.length > 0 ? (
+                                posts.map((post, index) => (
+                                    <Box
+                                        key={index}
+                                        bgColor={"#fff"}
+                                        mt="4"
+                                        p="4"
+                                        shadow={6}
+                                        borderRadius="10"
+                                        shadowRadius={12}
                                     >
-                                        <Avatar
-                                            bg="green.500"
-                                            source={{
-                                                uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-                                            }}
-                                            size="sm"
-                                        >
-                                            AJ
-                                        </Avatar>
-                                    </Button>
-                                    <VStack>
-                                        <Text fontSize={"md"}>John Doe</Text>
-                                        <Text fontSize={"xs"}>2 days ago</Text>
-                                    </VStack>
-                                    <Button bgColor={"#6E34B8"} ml="20">
                                         <HStack alignItems={"center"}>
-                                            <Icon
-                                                as={
-                                                    <AntDesign
-                                                        name="plus"
-                                                        size={20}
-                                                    />
+                                            <Button
+                                                size={50}
+                                                variant="ghost"
+                                                onPress={() =>
+                                                    navigation.navigate(
+                                                        "Profile"
+                                                    )
                                                 }
-                                                color="#ffffff"
-                                                mr="2"
-                                            />
-                                            <Text color={"#ffffff"}>
-                                                Follow
-                                            </Text>
+                                            >
+                                                <Avatar
+                                                    bg="green.500"
+                                                    source={{
+                                                        uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+                                                    }}
+                                                    size="sm"
+                                                >
+                                                    AJ
+                                                </Avatar>
+                                            </Button>
+                                            <VStack>
+                                                <Text fontSize={"md"}>
+                                                    {post.user.name}
+                                                </Text>
+                                                <Text fontSize={"xs"}>
+                                                    {/* find when the post was creaated */}
+                                                    {moment(
+                                                        post.createdAt
+                                                    ).fromNow()}
+                                                </Text>
+                                            </VStack>
+                                            {!post.followedByUser ? (
+                                                <Button
+                                                    bgColor={"#6E34B8"}
+                                                    ml="20"
+                                                    onPress={() => {
+                                                        console.log(
+                                                            "followedByUser"
+                                                        );
+                                                        onFollow(post.user._id);
+                                                    }}
+                                                >
+                                                    <HStack
+                                                        alignItems={"center"}
+                                                    >
+                                                        <Icon
+                                                            as={
+                                                                <AntDesign
+                                                                    name="plus"
+                                                                    size={20}
+                                                                />
+                                                            }
+                                                            color="#ffffff"
+                                                            mr="2"
+                                                        />
+                                                        <Text color={"#ffffff"}>
+                                                            Follow
+                                                        </Text>
+                                                    </HStack>
+                                                </Button>
+                                            ) : (
+                                                <Button
+                                                    bgColor={"#6E34B8"}
+                                                    ml="20"
+                                                    onPress={() => {
+                                                        onUnfollow(
+                                                            post.user._id
+                                                        );
+                                                    }}
+                                                >
+                                                    <HStack
+                                                        alignItems={"center"}
+                                                    >
+                                                        <Icon
+                                                            as={
+                                                                <AntDesign
+                                                                    name="minus"
+                                                                    size={20}
+                                                                />
+                                                            }
+                                                            color="#ffffff"
+                                                            mr="2"
+                                                        />
+                                                        <Text color={"#ffffff"}>
+                                                            Unfollow
+                                                        </Text>
+                                                    </HStack>
+                                                </Button>
+                                            )}
                                         </HStack>
-                                    </Button>
-                                </HStack>
-                                <Text mt="3">
-                                    Hello this is a sample text. This is how a
-                                    post will look like. It can also have
-                                    multiple lines. Just like this
-                                </Text>
-                                <Center mt="4">
-                                    <Image
-                                        borderRadius={10}
-                                        source={{
-                                            uri: "https://picsum.photos/200",
-                                        }}
-                                        alt="Alternate Text"
-                                        size="2xl"
-                                    />
-                                    <HStack alignItems={"center"} mt="4">
-                                        <Icon
-                                            as={
-                                                <AntDesign
-                                                    name="hearto"
-                                                    size={20}
+                                        <Text mt="3">{post.text}</Text>
+                                        <Center mt="4">
+                                            {post.image && (
+                                                <Image
+                                                    borderRadius={10}
+                                                    source={{
+                                                        uri: post.image.url,
+                                                    }}
+                                                    alt="Alternate Text"
+                                                    size="2xl"
                                                 />
-                                            }
-                                            color="#6E34B8"
-                                            size={"lg"}
-                                        />
-                                        <Text fontSize={"md"} ml="3">
-                                            100
-                                        </Text>
-                                    </HStack>
-                                </Center>
-                            </Box>
+                                            )}
+                                            <HStack
+                                                alignItems={"center"}
+                                                mt="4"
+                                            >
+                                                {post.likedByUser ? (
+                                                    <Icon
+                                                        as={
+                                                            <AntDesign
+                                                                name="hearto"
+                                                                size={20}
+                                                            />
+                                                        }
+                                                        color="#6E34B8"
+                                                        size={"lg"}
+                                                    />
+                                                ) : (
+                                                    <Icon
+                                                        as={
+                                                            <AntDesign
+                                                                name="hearto"
+                                                                size={20}
+                                                            />
+                                                        }
+                                                        color="#6E34B8"
+                                                        size={"lg"}
+                                                    />
+                                                )}
+                                                <Text fontSize={"md"} ml="3">
+                                                    {post.likedBy.length}
+                                                </Text>
+                                            </HStack>
+                                        </Center>
+                                    </Box>
+                                ))
+                            ) : (
+                                <Box
+                                    bgColor={"#fff"}
+                                    mt="4"
+                                    p="4"
+                                    shadow={6}
+                                    borderRadius="10"
+                                    shadowRadius={12}
+                                >
+                                    <Text fontSize={"md"}>No posts yet.</Text>
+                                </Box>
+                            )}
                         </Box>
                         <Box h={40} />
                     </ScrollView>

@@ -15,6 +15,7 @@ import SelfProfile from "../screens/selfProfile";
 import CreatePortfolio from "../screens/createPortfolio";
 import Setting from "../screens/setting";
 import { useSelector } from "react-redux";
+import useMediaQuery from "../hooks/useMediaQuery";
 import { Screen1, Screen2, Screen3 } from "../screens/news";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -43,6 +44,8 @@ function NewsStackedScreen() {
 }
 
 function HomeTabs() {
+    const isDesktop = useMediaQuery("(min-width: 960px)");
+    console.log(isDesktop);
     return (
         <Tab.Navigator
             initialRouteName="Homepage"
@@ -50,6 +53,7 @@ function HomeTabs() {
                 tabBarShowLabel: false,
                 headerShown: false,
                 tabBarStyle: {
+                    display: isDesktop ? "none" : "flex",
                     position: "absolute",
                     bottom: 40,
                     left: 20,

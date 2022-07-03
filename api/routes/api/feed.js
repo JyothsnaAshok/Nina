@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const mongoose = require("mongoose");
 const Feed = require("../../models/Feeds");
 const User = require("../../models/Users");
 const multer = require("multer");
@@ -13,10 +14,8 @@ const { uploadImage } = require("../../utils/initialiseCloudinary");
  */
 router.post("/", middleware, uploads.single("image"), async (req, res) => {
     try {
-        console.log("backend");
         const { text } = req.body;
         const userId = req.user.id;
-        console.log(req.body);
         const userDetails = await User.findById(userId);
         if (!userDetails) {
             return res.status(400).json({
@@ -58,12 +57,17 @@ router.get("/", middleware, async (req, res) => {
         feeds.forEach((feed) => {
             let likedByUser = false;
             let followedByUser = false;
-            if (feed.likedBy.includes(req.user.id)) {
+            console.log(feed);
+            // convert req.user.id to objectId
+            const userId = mongoose.Types.ObjectId(req.user.id);
+            const feedUserId = mongoose.Types.ObjectId(feed.user._id);
+            if (feed.likedBy.includes(userId)) {
                 likedByUser = true;
             }
             if (user.following.includes(feed.user.id)) {
                 followedByUser = true;
             }
+            console.log(likedByUser, followedByUser);
             response.push({ ...feed._doc, likedByUser, followedByUser });
         });
         if (req.query.filter) {

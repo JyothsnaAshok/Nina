@@ -1,11 +1,19 @@
-import { Avatar, Box, Button, Center, Icon, Link, Text } from "native-base";
+import {
+    Avatar,
+    Box,
+    Button,
+    Center,
+    Icon,
+    Link,
+    Text,
+    Image,
+} from "native-base";
 import React from "react";
 import { FaRegNewspaper } from "react-icons/fa";
 import { MdTravelExplore } from "react-icons/md";
 import { AiFillHome } from "react-icons/ai";
-import Image from "next/image";
 
-export default function Navbar() {
+export default function Navbar({ navigation }) {
     return (
         <Box
             // height={"5vh"}
@@ -17,7 +25,12 @@ export default function Navbar() {
             p={5}
         >
             <Box px={8}>
-                <Image src="/images/icon.svg" width={110} height={45} />
+                <Image
+                    src="/images/icon.svg"
+                    width={110}
+                    height={45}
+                    alt="home"
+                />
             </Box>
             <Box
                 display="flex"
@@ -34,7 +47,11 @@ export default function Navbar() {
                     <Center>
                         <AiFillHome size={24} />
                     </Center>
-                    <Link href="/" p={0} isUnderlined={false}>
+                    <Link
+                        onPress={() => navigation.navigate("Homepage")}
+                        p={0}
+                        isUnderlined={false}
+                    >
                         Home
                     </Link>
                 </Box>
@@ -47,7 +64,11 @@ export default function Navbar() {
                     <Center>
                         <MdTravelExplore size={24} />
                     </Center>
-                    <Link href="/explore" p={0} isUnderlined={false}>
+                    <Link
+                        onPress={() => navigation.navigate("Explore")}
+                        p={0}
+                        isUnderlined={false}
+                    >
                         Explore
                     </Link>
                 </Box>
