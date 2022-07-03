@@ -48,6 +48,7 @@ export default function createPortfolio() {
             toast.show({
                 description: "Stock added to portfolio",
             });
+            queryClient.invalidateQueries("portfolio");
         },
         onError: (e) => {
             // toast.show({

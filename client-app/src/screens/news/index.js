@@ -5,7 +5,7 @@ import logo from "../../../assets/logo.png";
 export function Screen1({ navigation }) {
     return (
         <Box flex="1" bgColor={"#ffffff"}>
-            News 1
+            {/* <img src="../assets/1.jpg" /> */}
         </Box>
     );
 }
