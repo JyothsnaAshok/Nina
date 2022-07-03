@@ -31,11 +31,10 @@ import {
 export default function Explore({ navigation }) {
     const { data: trends } = useQuery("trends", GetTrendPosts);
 
-    const [follow, setFollow] = React.useState({});
-
     const toast = useToast();
 
     const QueryClient = useQueryClient();
+    console.log(trends, "explore-trends");
 
     const getRandomPost = () => {
         const randomIndex = Math.floor(Math.random() * trends.length);
@@ -45,13 +44,15 @@ export default function Explore({ navigation }) {
     const isDesktop = useMediaQuery("(min-width: 960px)");
 
     const [randomPost, setRandomPost] = React.useState(getRandomPost());
-
+    const [follow, setFollow] = React.useState(randomPost?.followedByUser);
+    console.log(randomPost, "randomPost");
     const followMutation = useMutation(UpdateFollow, {
         onSuccess: (data) => {
             toast.show({
                 description: "Followed",
             });
-            QueryClient.invalidateQueries("posts");
+            setFollow(true);
+            QueryClient.invalidateQueries("explore-trends");
         },
         onError: (e) => {
             console.log(e);
@@ -64,7 +65,8 @@ export default function Explore({ navigation }) {
             toast.show({
                 description: "Unfollowed",
             });
-            QueryClient.invalidateQueries("posts");
+            setFollow(false);
+            QueryClient.invalidateQueries("explore-trends");
         },
         onError: (e) => {
             console.log(e);
@@ -131,70 +133,86 @@ export default function Explore({ navigation }) {
                     shadowRadius={12}
                 >
                     <HStack alignItems={"center"}>
-                        <Avatar
-                            bg="green.500"
-                            source={{
-                                uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-                            }}
-                            size="sm"
+                        <Flex
+                            direction="row"
+                            justify="space-between"
+                            alignContent="center"
+                            width={"100%"}
                         >
-                            AJ
-                        </Avatar>
-                        <VStack ml="3">
-                            <Text fontSize={"md"}>{randomPost.user.name}</Text>
-                            <Text fontSize={"xs"}>
-                                {moment(randomPost.createdAt).fromNow()}
-                            </Text>
-                        </VStack>
-                        <Button bgColor={"#6E34B8"} ml="24">
-                            <HStack>
+                            <HStack alignItems={"center"}>
+                                <Avatar
+                                    bg="green.500"
+                                    source={{
+                                        uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+                                    }}
+                                    size="sm"
+                                >
+                                    AJ
+                                </Avatar>
+                                <VStack ml="3">
+                                    <Text fontSize={"md"} maxW={100}>
+                                        {randomPost.user.name}
+                                    </Text>
+                                    <Text fontSize={"xs"}>
+                                        {moment(randomPost.createdAt).fromNow()}
+                                    </Text>
+                                </VStack>
+                            </HStack>
+                            <VStack>
                                 <Button
+                                    bgColor={"#6E34B8"}
                                     onPress={
                                         // () =>
                                         // onFollow(posts[index]?.user._id)
-                                        randomPost?.followedByUser
+                                        follow
                                             ? () => {
                                                   onUnfollow(
                                                       randomPost?.user._id
                                                   );
-                                                  setFollow(false);
                                               }
                                             : () => {
                                                   onFollow(
                                                       randomPost?.user._id
                                                   );
-                                                  setFollow(true);
                                               }
                                     }
-                                    variant={"outline"}
-                                    borderRadius="6"
-                                    py={1}
-                                    width={"8rem"}
                                     rightIcon={
                                         <Icon
                                             size="5"
-                                            color="coolGray.500"
+                                            color="#fff"
                                             as={
-                                                <AiOutlinePlus
-                                                    style={{
-                                                        marginLeft: "0.5rem",
-                                                        fontSize: "1rem",
-                                                        color: "#1d1d1d",
-                                                    }}
-                                                />
+                                                follow ? (
+                                                    <AiOutlineFire
+                                                        style={{
+                                                            marginLeft:
+                                                                "0.5rem",
+                                                            fontSize: "1rem",
+                                                            color: "#1d1d1d",
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    <AiOutlinePlus
+                                                        style={{
+                                                            marginLeft:
+                                                                "0.5rem",
+                                                            fontSize: "1rem",
+                                                            color: "#1d1d1d",
+                                                        }}
+                                                    />
+                                                )
                                             }
                                         />
                                     }
                                 >
-                                    <Text color="#1d1d1d">
-                                        {randomPost?.followedByUser
-                                            ? "Unfollow"
-                                            : "Follow"}
-                                        {/* {follow ? "Unfollow" : "Follow"} */}
-                                    </Text>
+                                    <HStack>
+                                        <Text color="#fff">
+                                            {follow ? "Unfollow" : "Follow"}
+                                            {/* {follow ? "Unfollow" : "Follow"} */}
+                                        </Text>
+                                    </HStack>
                                 </Button>
-                            </HStack>
-                        </Button>
+                            </VStack>
+                        </Flex>
                     </HStack>
                     <Text mt="3">{randomPost.text}</Text>
                     <Center mt="4">

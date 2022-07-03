@@ -525,94 +525,106 @@ export default function Home({ navigation }) {
                                         shadowRadius={12}
                                     >
                                         <HStack alignItems={"center"}>
-                                            <Button
-                                                size={50}
-                                                variant="ghost"
-                                                onPress={() =>
-                                                    navigation.navigate(
-                                                        "Profile"
-                                                    )
-                                                }
+                                            <Flex
+                                                direction="row"
+                                                justify="space-between"
+                                                alignContent="center"
+                                                width={"100%"}
                                             >
-                                                <Avatar
-                                                    bg="green.500"
-                                                    source={{
-                                                        uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-                                                    }}
-                                                    size="sm"
-                                                >
-                                                    AJ
-                                                </Avatar>
-                                            </Button>
-                                            <VStack>
-                                                <Text fontSize={"md"}>
-                                                    {post.user.name}
-                                                </Text>
-                                                <Text fontSize={"xs"}>
-                                                    {/* find when the post was creaated */}
-                                                    {moment(
-                                                        post.createdAt
-                                                    ).fromNow()}
-                                                </Text>
-                                            </VStack>
-                                            {!post.followedByUser ? (
-                                                <Button
-                                                    bgColor={"#6E34B8"}
-                                                    ml="20"
-                                                    onPress={() => {
-                                                        console.log(
-                                                            "followedByUser"
-                                                        );
-                                                        onFollow(post.user._id);
-                                                    }}
-                                                >
-                                                    <HStack
-                                                        alignItems={"center"}
+                                                <HStack alignItems={"center"}>
+                                                    <Button
+                                                        size={50}
+                                                        variant="ghost"
+                                                        onPress={() =>
+                                                            navigation.navigate(
+                                                                "Profile"
+                                                            )
+                                                        }
                                                     >
-                                                        <Icon
-                                                            as={
-                                                                <AntDesign
-                                                                    name="plus"
-                                                                    size={20}
-                                                                />
-                                                            }
-                                                            color="#ffffff"
-                                                            mr="2"
-                                                        />
-                                                        <Text color={"#ffffff"}>
-                                                            Follow
+                                                        <Avatar
+                                                            bg="green.500"
+                                                            source={{
+                                                                uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+                                                            }}
+                                                            size="sm"
+                                                        >
+                                                            AJ
+                                                        </Avatar>
+                                                    </Button>
+
+                                                    <VStack>
+                                                        <Text
+                                                            fontSize={"md"}
+                                                            maxW={100}
+                                                        >
+                                                            {post.user.name}
                                                         </Text>
-                                                    </HStack>
-                                                </Button>
-                                            ) : (
-                                                <Button
-                                                    bgColor={"#6E34B8"}
-                                                    ml="20"
-                                                    onPress={() => {
-                                                        onUnfollow(
-                                                            post.user._id
-                                                        );
-                                                    }}
-                                                >
-                                                    <HStack
-                                                        alignItems={"center"}
+                                                        <Text fontSize={"xs"}>
+                                                            {/* find when the post was creaated */}
+                                                            {moment(
+                                                                post.createdAt
+                                                            ).fromNow()}
+                                                        </Text>
+                                                    </VStack>
+                                                </HStack>
+                                                <VStack>
+                                                    <Button
+                                                        bgColor={"#6E34B8"}
+                                                        onPress={
+                                                            post?.followedByUser
+                                                                ? () => {
+                                                                      console.log(
+                                                                          "Follow"
+                                                                      );
+                                                                      onUnfollow(
+                                                                          post
+                                                                              ?.user
+                                                                              ._id
+                                                                      );
+                                                                  }
+                                                                : () => {
+                                                                      onFollow(
+                                                                          post
+                                                                              ?.user
+                                                                              ._id
+                                                                      );
+                                                                  }
+                                                        }
                                                     >
-                                                        <Icon
-                                                            as={
-                                                                <AntDesign
-                                                                    name="minus"
-                                                                    size={20}
-                                                                />
+                                                        <HStack
+                                                            alignItems={
+                                                                "center"
                                                             }
-                                                            color="#ffffff"
-                                                            mr="2"
-                                                        />
-                                                        <Text color={"#ffffff"}>
-                                                            Unfollow
-                                                        </Text>
-                                                    </HStack>
-                                                </Button>
-                                            )}
+                                                        >
+                                                            <Icon
+                                                                as={
+                                                                    <AntDesign
+                                                                        name={
+                                                                            post?.followedByUser
+                                                                                ? "minus"
+                                                                                : "plus"
+                                                                        }
+                                                                        size={
+                                                                            20
+                                                                        }
+                                                                    />
+                                                                }
+                                                                color="#ffffff"
+                                                                mr="2"
+                                                            />
+                                                            <Text
+                                                                color={
+                                                                    "#ffffff"
+                                                                }
+                                                            >
+                                                                {post?.followedByUser
+                                                                    ? "Unfollow"
+                                                                    : "Follow"}
+                                                            </Text>
+                                                        </HStack>
+                                                    </Button>
+                                                </VStack>
+                                            </Flex>
                                         </HStack>
                                         <Text mt="3">{post.text}</Text>
                                         <Center mt="4">
