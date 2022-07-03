@@ -43,3 +43,5 @@ The web frontend would run at http://localhost:3000/
 [Figma](https://www.figma.com/file/NgiDQ4iKnpl3BmkTpykSgF/Untitled?node-id=45%3A1203)
 
 [Deployed Backend on Heroku](https://nina-app.herokuapp.com)
+
+[Video and APK](https://drive.google.com/drive/folders/1lPUrHgElHWzn3LGM35ZinZdR_Vp4gMIW)
