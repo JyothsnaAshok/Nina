@@ -105,3 +105,48 @@ export const UpdateUnfollow = async (id) => {
         console.log(e);
     }
 };
+
+export const LikePost = async (id) => {
+    try {
+        // let { user } = JSON.parse(AsyncStorage.getItem("persist:root"));
+        // user = JSON.parse(user);
+        // const token = user.user.token;
+        // console.log(token, "token put");
+        const token = await AsyncStorage.getItem("token");
+        const response = await axios.put(
+            `${BACKEND_URL}/api/feed/like/${id}`,
+            "helloarushi",
+            {
+                headers: {
+                    "x-auth-token": token,
+                },
+            }
+        );
+        return response.data;
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+export const UnlikePost = async (id) => {
+    try {
+        console.log("idsnfjbaskjfbsajkfbhsjkfgaskjfghkusgfouasgfousahfos", id);
+        // let { user } = JSON.parse(AsyncStorage.getItem("persist:root"));
+        // user = JSON.parse(user);
+        // const token = user.user.token;
+        // console.log(token, "token put");
+        const token = await AsyncStorage.getItem("token");
+        const response = await axios.put(
+            `${BACKEND_URL}/api/feed/unlike/${id}`,
+            "helloarushi",
+            {
+                headers: {
+                    "x-auth-token": token,
+                },
+            }
+        );
+        return response.data;
+    } catch (e) {
+        console.log(e);
+    }
+};
